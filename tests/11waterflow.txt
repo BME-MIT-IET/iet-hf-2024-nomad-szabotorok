@@ -1,0 +1,19 @@
+create WaterSource
+create Pipe
+create Pump
+create Pipe
+create Cistern
+connect 0 WaterSource 0 Pump 0
+connect 1 Pump 0 Cistern 0
+create Mechanic Pump 0
+start 5
+pumpchangeflow 0 1
+pass
+repairpump
+pass
+repairpump
+pass
+repairpump
+pass
+repairpump
+pass

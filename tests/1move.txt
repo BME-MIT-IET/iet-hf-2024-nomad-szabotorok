@@ -1,0 +1,16 @@
+create WaterSource
+create Pipe
+create Pump
+create Pipe
+create Cistern
+connect 0 WaterSource 0 Pump 0
+connect 1 Pump 0 Cistern 0
+create Mechanic Pump 0
+create Saboteur Pipe 1
+start 1
+pass
+move Pipe 1
+move Pipe 0
+move Cistern 0
+pass
+pass

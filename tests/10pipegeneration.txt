@@ -1,0 +1,7 @@
+create Cistern
+create Pipe 0
+create Mechanic Cistern 0
+start 1
+carrypipe 0
+getneighbours
+pass

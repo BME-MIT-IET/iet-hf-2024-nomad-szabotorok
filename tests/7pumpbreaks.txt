@@ -1,0 +1,6 @@
+create Pump
+create Mechanic Pump 0
+start 3
+pass
+pass
+pass

@@ -1,0 +1,34 @@
+A tesztelésnél a pumpa eltörése nem random
+Created: watersource 0
+Created: pipe 0
+Created: cistern 0
+watersource 0 added pipe 0 to neighbours
+pipe 0 added watersource 0 to neighbours
+cistern 0 added pipe 0 to neighbours
+pipe 0 added cistern 0 to neighbours
+Created: mechanic 0
+mechanic 0 moving to watersource 0 - Successful
+Created: mechanic 1
+mechanic 1 moving to cistern 0 - Successful
+1/1 Round.
+Next up: mechanic 0
+CarryPipeEnd
+watersource 0 Removed Neighbour: pipe 0
+pipe 0 Removed Neighbour: watersource 0
+mechanic 0 passed the turn
+Next up: mechanic 1
+CarryPipeEnd
+cistern 0 Removed Neighbour: pipe 0
+pipe 0 Removed Neighbour: cistern 0
+mechanic 1 passed the turn
+PullWater - cistern 0
+0 units of water gathered at the cistern
+PushWater - watersource 0
+0 units of water leaked out from the broken pipes
+Round over.
+You hear the water flowing.
+Rounds left: 0
+Mechanic points: 0
+Saboteur points: 0
+Draw!
+Draw!

@@ -1,0 +1,62 @@
+A tesztelésnél a pumpa eltörése nem random
+Created: watersource 0
+Created: pipe 0
+Created: pump 0
+Created: pipe 1
+Created: cistern 0
+watersource 0 added pipe 0 to neighbours
+pipe 0 added watersource 0 to neighbours
+pump 0 added pipe 0 to neighbours
+pipe 0 added pump 0 to neighbours
+pump 0 added pipe 1 to neighbours
+pipe 1 added pump 0 to neighbours
+cistern 0 added pipe 1 to neighbours
+pipe 1 added cistern 0 to neighbours
+Created: saboteur 0
+saboteur 0 moving to pipe 0 - Successful
+1/3 Round.
+Next up: saboteur 0
+saboteur 0 passed the turn
+PullWater - cistern 0
+0 units of water gathered at the cistern
+pump 0 PushWater - Can't push, no exit pipe connected
+pump 0 PullWater - Can't pull, no entry pipe connected
+PushWater - watersource 0
+0 units of water leaked out from the broken pipes
+Round over.
+You hear the water flowing.
+Rounds left: 2
+Mechanic points: 0
+Saboteur points: 0
+2/3 Round.
+Next up: saboteur 0
+The pipe has been broken, 5 units of water leaked out
+saboteur 0 passed the turn
+PullWater - cistern 0
+0 units of water gathered at the cistern
+pump 0 PushWater - Can't push, no exit pipe connected
+pump 0 PullWater - Can't pull, no entry pipe connected
+pump 0 has been broken
+PushWater - watersource 0
+5 units of water leaked out from the broken pipes
+Round over.
+You hear the water flowing.
+Rounds left: 1
+Mechanic points: 0
+Saboteur points: 10
+3/3 Round.
+Next up: saboteur 0
+saboteur 0 passed the turn
+PullWater - cistern 0
+0 units of water gathered at the cistern
+pump 0 PushWater - Pump is broken, cant push
+pump 0 PullWater - Pump is broken, cant pull water
+PushWater - watersource 0
+5 units of water leaked out from the broken pipes
+Round over.
+You hear the water flowing.
+Rounds left: 0
+Mechanic points: 0
+Saboteur points: 15
+The Saboteurs won!
+The Saboteurs won!

@@ -1,0 +1,19 @@
+create WaterSource
+create Pipe
+create Pump
+create Pipe
+create Cistern
+create Pipe
+create Pump
+create Pipe
+connect 0 WaterSource 0 Pump 0
+connect 1 Pump 0 Cistern 0
+connect 2 Cistern 0 Pump 1
+connect 3 Pump 1 WaterSource 0
+create Mechanic Pump 0
+start 2
+carrypipe 1
+move Pipe 0
+move WaterSource 0
+laypipe
+pass
