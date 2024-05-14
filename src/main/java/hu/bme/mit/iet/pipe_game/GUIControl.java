@@ -5,22 +5,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Line2D;
-import java.beans.PropertyChangeListener;
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GUIControl extends JFrame{
-    private Control gameControl;
+    private transient Control gameControl;
     private View gameField;
-    private int rounds, mechCount, sabCount;
+    private int rounds;
+    private int mechCount;
+    private int sabCount;
+    private String arial = "Arial";
 
     /**
      * a menu létrehozása exit és start gombokkal
      * a gombok műkődésének beállítása
      */
-    public void Run(){
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public void run(){
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setSize(1000, 855);
         this.setTitle("Sivatagi Vízhálózat");
         this.setResizable(false);
@@ -31,16 +32,16 @@ public class GUIControl extends JFrame{
         menu.setPreferredSize(new Dimension(500,500));
 
         JButton start = new JButton("Játék indítása");
-        start.setFont(new Font("Arial", Font.BOLD, 32));
+        start.setFont(new Font(arial, Font.BOLD, 32));
         start.setBounds((1000-300)/2, 250, 300, 100);
 
         JButton exit = new JButton("Kilépés");
         exit.setBounds((1000-300)/2, 400, 300, 100);
-        exit.setFont(new Font("Arial", Font.BOLD, 32));
+        exit.setFont(new Font(arial, Font.BOLD, 32));
 
         JLabel title = new JLabel("Sivatagi Vízhálózat", SwingConstants.CENTER);
         title.setBounds(0, 50, 1000, 150);
-        title.setFont(new Font("Arial", Font.BOLD, 60));
+        title.setFont(new Font(arial, Font.BOLD, 60));
 
         menu.add(title);
         menu.add(start);
@@ -63,7 +64,7 @@ public class GUIControl extends JFrame{
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Settings(menu);
+                settings(menu);
             }
         });
 
@@ -76,7 +77,7 @@ public class GUIControl extends JFrame{
      * a start gomb megnyomására a kiválasztott beállítások beállítása
      * @param oldMenu
      */
-    public void Settings(JPanel oldMenu) {
+    public void settings(JPanel oldMenu) {
         this.remove(oldMenu);
 
         final JPanel menu = new JPanel();
@@ -85,11 +86,11 @@ public class GUIControl extends JFrame{
 
         JLabel title = new JLabel("Beállítások", SwingConstants.CENTER);
         title.setBounds(0, 20, 1000, 150);
-        title.setFont(new Font("Arial", Font.BOLD, 60));
+        title.setFont(new Font(arial, Font.BOLD, 60));
 
         JLabel kor = new JLabel("Hány kör legyen?", SwingConstants.LEFT);
         kor.setBounds(150, 200, 500, 100);
-        kor.setFont(new Font("Arial", Font.BOLD, 30));
+        kor.setFont(new Font(arial, Font.BOLD, 30));
 
         Integer[] szamok =  new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20};
         final JComboBox<Integer> roundNum = new JComboBox<>(szamok);
@@ -97,20 +98,20 @@ public class GUIControl extends JFrame{
 
         JLabel saboteur = new JLabel("Hány szabotőr legyen?", SwingConstants.LEFT);
         saboteur.setBounds(150, 300, 500, 100);
-        saboteur.setFont(new Font("Arial", Font.BOLD, 30));
+        saboteur.setFont(new Font(arial, Font.BOLD, 30));
 
         final JComboBox<Integer> saboteurCount = new JComboBox<>(new Integer[]{2, 3, 4});
         saboteurCount.setBounds(650, 340, 50, 20);
 
         JLabel mechanic = new JLabel("Hány szerelő legyen?", SwingConstants.LEFT);
         mechanic.setBounds(150, 400, 500, 100);
-        mechanic.setFont(new Font("Arial", Font.BOLD, 30));
+        mechanic.setFont(new Font(arial, Font.BOLD, 30));
 
         final JComboBox<Integer> mechanicCount = new JComboBox<>(new Integer[]{2, 3, 4});
         mechanicCount.setBounds(650, 440, 50, 20);
 
         JButton start = new JButton("Játék indítása");
-        start.setFont(new Font("Arial", Font.BOLD, 32));
+        start.setFont(new Font(arial, Font.BOLD, 32));
         start.setBounds((1000 - 300) / 2, 500, 300, 100);
 
         menu.add(title);
@@ -132,7 +133,7 @@ public class GUIControl extends JFrame{
                 sabCount = (int)saboteurCount.getSelectedItem();
                 mechCount = (int)mechanicCount.getSelectedItem();
                 remove(menu);
-                StartGame();
+                startGame();
             }
         });
 
@@ -144,12 +145,12 @@ public class GUIControl extends JFrame{
      * Játék indítása
      * játékmező beállítása és kirajzolása
      */
-    public void StartGame() {
+    public void startGame() {
         gameField = new View(this);
         gameControl= new Control();
-        gameControl.Init(rounds,mechCount,sabCount);
+        Control.init(rounds,mechCount,sabCount);
 
-        ArrayList<ViewBase> things = new ArrayList<ViewBase>();
+        ArrayList<ViewBase> things = new ArrayList<>();
 
         for (int i = 0; i < gameControl.getPipes().size(); ++i){
             PipeView thing = new PipeView(gameField, gameControl.getPipes().get(i));
@@ -191,68 +192,73 @@ public class GUIControl extends JFrame{
         gameField.UpdateAll();
     }
 
+    public void handlePutDownPipe(int ertek) throws NullPointerException {
+        Pump pump = gameControl.getPumps().get(ertek);
+        PumpView pumpView = new PumpView(gameField, pump);
+        PipeView pipeView = new PipeView(gameField, gameControl.getPipes().get(gameControl.getPipes().size() - 1));
+
+        ViewBase posPipe = null;
+        for (int i = 0; i < gameField.getFields().size(); ++i) {
+
+            if (gameControl.getLastPlayer().getPosition().getId().equals(gameField.getFields().get(i).getID())) {
+                posPipe = gameField.getFields().get(i);
+                break;
+            }
+        }
+
+        int n1X = 0;
+        int n1Y = 0;
+        int n2X = 0;
+        int n2Y = 0;
+
+        SystemPart posp = pump.getNeighbours().get(0);
+        SystemPart newp = pump.getNeighbours().get(1);
+
+        String n1 = posp.getNeighbours().get(0).getId();
+        String n2 = newp.getNeighbours().get(1).getId();
+
+        ArrayList<ViewBase> fields = gameField.getFields();
+        for (ViewBase f : fields) {
+            String id = f.getID();
+            if (id.equals(n1)) {
+                n1X = f.getX();
+                n1Y = f.getY();
+            }
+            if (id.equals(n2)) {
+                n2X = f.getX();
+                n2Y = f.getY();
+            }
+        }
+        if (posPipe == null)
+            return;
+        pumpView.setCoords(posPipe.x, posPipe.y);
+        pipeView.setCoords((n2X + posPipe.x) / 2, (n2Y + posPipe.y) / 2);
+        posPipe.setCoords((n1X + posPipe.x) / 2, (n1Y + posPipe.y) / 2);
+
+        fields.add(pumpView);
+        fields.add(pipeView);
+    }
+
     /**
      * Egy commandot vegrehajt, azaz atad a modellnek, h vegrehajtsa az akciot.
      * Ha letettunk egy pumpat, akkor azt felveszi a jatekterbe
      * @param commands
      */
-    public void commitCommand(ArrayList<String> commands) {
-        int ertek = gameControl.PlayerAction(commands);
+    public void commitCommand(List<String> commands) {
+        int ertek = gameControl.playerAction(commands);
 
         /**
          * ha ertek <0 ,akkor nem volt pumpaletetel
          * ha ertek >= 0, akkro volt, es ertek a pumps-ban az idnexet adja vissza
          */
-        if ( ertek>= 0) {
-            Pump pump = gameControl.getPumps().get(ertek);
-            PumpView pumpView = new PumpView(gameField, pump);
-            PipeView pipeView = new PipeView(gameField, gameControl.getPipes().get(gameControl.getPipes().size() - 1));
-
-            ViewBase posPipe = null;
-            for (int i = 0; i < gameField.getFields().size(); ++i) {
-
-                if (gameControl.getLastPlayer().getPosition().getId().equals(gameField.getFields().get(i).getID())) {
-                    posPipe = gameField.getFields().get(i);
-                    break;
-                }
-            }
-
-            int n1X = 0;
-            int n1Y = 0;
-            int n2X = 0;
-            int n2Y = 0;
-
-            SystemPart posp = pump.getNeighbours().get(0);
-            SystemPart newp = pump.getNeighbours().get(1);
-
-            String n1 = posp.getNeighbours().get(0).getId();
-            String n2 = newp.getNeighbours().get(1).getId();
-
-            ArrayList<ViewBase> fields = gameField.getFields();
-            for (ViewBase f : fields) {
-                String id = f.getID();
-                if (id.equals(n1)) {
-                    n1X = f.getX();
-                    n1Y = f.getY();
-                }
-                if (id.equals(n2)) {
-                    n2X = f.getX();
-                    n2Y = f.getY();
-                }
-            }
-
-            pumpView.setCoords(posPipe.x, posPipe.y);
-            pipeView.setCoords((n2X + posPipe.x) / 2, (n2Y + posPipe.y) / 2);
-            posPipe.setCoords((n1X + posPipe.x) / 2, (n1Y + posPipe.y) / 2);
-
-            fields.add(pumpView);
-            fields.add(pipeView);
+        if (ertek>= 0) {
+            handlePutDownPipe(ertek);
         }
 
-        ArrayList<Cistern> cisterns = gameControl.getCisterns();
+        List<Cistern> cisterns = gameControl.getCisterns();
         for (int i = 0; i < cisterns.size(); ++i){
 
-            if ( !cisterns.get(i).hasPump() && cisterns.get(i).hasP() ==true) {
+            if ( !cisterns.get(i).hasPump() && cisterns.get(i).hasP()) {
                 ArrayList<ViewBase> fields = gameField.getFields();
                 PipeView pw = new PipeView(gameField, cisterns.get(i).getPipe());
                 int x = 0;
@@ -266,20 +272,19 @@ public class GUIControl extends JFrame{
                 }
                 pw.setCoords(x, y-100*cisterns.get(i).getpCount());
                 fields.add(pw);
-                System.out.println("generalodott");
             }
         }
         /**
          * Vege van e a jateknak
          */
-        CheckState();
+        checkState();
     }
 
     /**
      * Ellenorizzuk, hogy vege van e a jateknak
      */
-    public void CheckState() {
-        if(gameControl.GameOver()) {
+    public void checkState() {
+        if(gameControl.gameOver()) {
             int mech = gameControl.getMechanicPoints();
             int sab = Control.getSaboteurPoints();
             String end = "Vége a Játéknak!\nSzerelők pontjai: " + mech +
@@ -296,7 +301,7 @@ public class GUIControl extends JFrame{
             JPanel panel = new JPanel();
             panel.setLayout(null);
             JTextArea textArea = new JTextArea(end);
-            textArea.setFont(new Font("Arial", Font.BOLD, 30));
+            textArea.setFont(new Font(arial, Font.BOLD, 30));
             textArea.setBounds(200,200,500,200);
 
 

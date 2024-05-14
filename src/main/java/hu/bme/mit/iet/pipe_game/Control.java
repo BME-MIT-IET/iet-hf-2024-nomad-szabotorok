@@ -3,18 +3,22 @@ package hu.bme.mit.iet.pipe_game;
 import java.util.*;
 
 public class Control {
-    private ArrayList<Mechanic> mechanics = new ArrayList<>();
-    private ArrayList<Saboteur> saboteurs = new ArrayList<>();
+    private static ArrayList<Mechanic> mechanics = new ArrayList<>();
+    private static ArrayList<Saboteur> saboteurs = new ArrayList<>();
     private static ArrayList<Pump> pumps = new ArrayList<>();
-    private ArrayList<Cistern> cisterns = new ArrayList<>();
-    private ArrayList<WaterSource> waterSources = new ArrayList<>();
+    private static ArrayList<Cistern> cisterns = new ArrayList<>();
+    private static ArrayList<WaterSource> waterSources = new ArrayList<>();
     private static ArrayList<Pipe> pipes = new ArrayList<>();
-    private int rounds, maxRound;
-    private static int saboteurPoints, mechanicPoints;
-    private Player currentPlayer,lastPlayer;
-    private boolean gameOver = false;
-    private boolean randEnabled = true;
-    private int pumpBreak = 2;
+    private static int rounds;
+    private static int maxRound;
+    private static int saboteurPoints;
+    private static int mechanicPoints;
+    private static Player currentPlayer;
+    private static Player lastPlayer;
+    private static boolean gameOver = false;
+    private static boolean randEnabled = true;
+    private static int pumpBreak = 2;
+    private static Random rnd = new Random();
 
     /**
      * A játék inicializálása:
@@ -25,7 +29,7 @@ public class Control {
      * @param mechanicCounter hány szerelő játszik
      * @param saboteurCounter hány szabotőr játszik
      */
-    public void Init(int r, int mechanicCounter, int saboteurCounter) {
+    public static void init(int r, int mechanicCounter, int saboteurCounter) {
         maxRound = r;
         rounds = 1;
 
@@ -100,22 +104,14 @@ public class Control {
      * Ilyenkor folyik a víz a csőrendszerben és frissülnek a csapatok pontszámai
      * Csökkenti az efektek időtartalmát
      */
-    public void RoundOver() {
-        /** ciszternák
-         */
-        for (Cistern c:cisterns) {
-            mechanicPoints += c.PullWater();
-            c.Generate();
-        }
-        /** pumpák
-         */
+
+    public static void handlePumps() {
         for (Pump p:pumps) {
             saboteurPoints += p.PushWater();
         }
         for (Pump p:pumps) {
             p.PullWater();
             // pump random eltörése
-            Random rnd = new Random();
             pumpBreak--;
             if (randEnabled) {
                 if(rnd.nextInt(10) > 7)
@@ -126,6 +122,18 @@ public class Control {
                     p.BreakPump();
             }
         }
+    } 
+    public static void roundOver() {
+        /** ciszternák
+         */
+        for (Cistern c:cisterns) {
+            mechanicPoints += c.PullWater();
+            c.generate();
+        }
+        /** pumpák
+         */
+        handlePumps();
+
         /** Vízforrás
          */
         for (WaterSource ws:waterSources) {
@@ -149,12 +157,37 @@ public class Control {
         }
     }
 
+    public void pumpChangeFlow(List<String> command) {
+        if (command.size() < 3) {
+            return;
+        }
+        String[] s1 = command.get(1).split(" ");
+        int p1 = Integer.parseInt(s1[1]);
+        int p2 = Integer.parseInt(command.get(3));
+        if (0 > p1 || p1 >= pipes.size() || 0 > p2 || p2 >= pipes.size() ){
+            // Nem letezo elemek
+            return;
+        }
 
-    /**
-     * A játékos parancsait feldolgozó és megvalósító metódus
-     * @param "currentPlayer" az éppen soron lévő játékos
-     */
-    public int PlayerAction(ArrayList<String> command) {
+        Pipe pipe1 = pipes.get(p1);
+        Pipe pipe2 = pipes.get(p2);
+        boolean p1found = false;
+        boolean p2found = false;
+
+        for (int i = 0; i < currentPlayer.getPosition().getNeighbours().size();++i) {
+            String id = currentPlayer.getPosition().getNeighbours().get(i).getId();
+            if (!p1found && id.equals(pipe1.id))
+                p1found = true;
+            if (!p2found && id.equals(pipe2.id))
+                p2found = true;
+            if (p1found && p2found) {
+                currentPlayer.ChangePumpFlow(pipe1, pipe2);
+                break;
+            }
+        }
+    }
+
+    public int handlePlayerCommand(List<String> command) {
         int pumpLayed = -1;
         switch (command.get(0)){
             case "breakpipe":
@@ -189,32 +222,7 @@ public class Control {
                 break;
             }
             case "pumpchangeflow":
-                if (command.size() < 3) {
-                    break;
-                }
-                String[] s1 = command.get(1).split(" ");
-                int p1 = Integer.parseInt(s1[1]);
-                int p2 = Integer.parseInt(command.get(3));
-                if (0 > p1 || p1 >= pipes.size() || 0 > p2 || p2 >= pipes.size() ){
-                    // Nem letezo elemek
-                    break;
-                }
-
-                Pipe pipe1 = pipes.get(p1);
-                Pipe pipe2 = pipes.get(p2);
-                boolean p1found = false, p2found = false;
-
-                for (int i = 0; i < currentPlayer.getPosition().getNeighbours().size();++i) {
-                    String id = currentPlayer.getPosition().getNeighbours().get(i).getId();
-                    if (!p1found && id.equals(pipe1.id))
-                        p1found = true;
-                    if (!p2found && id.equals(pipe2.id))
-                        p2found = true;
-                    if (p1found && p2found) {
-                        currentPlayer.ChangePumpFlow(pipe1, pipe2);
-                        break;
-                    }
-                }
+                pumpChangeFlow(command);
                 break;
             case "repair":
                 currentPlayer.Repair();
@@ -232,23 +240,32 @@ public class Control {
             default:
                 break;
         }
+        return pumpLayed;
+    }
+
+    /**
+     * A játékos parancsait feldolgozó és megvalósító metódus
+     * @param "currentPlayer" az éppen soron lévő játékos
+     */
+    public int playerAction(List<String> command) {
+        int pumpLayed = handlePlayerCommand(command);
         currentPlayer.decActionPoints();
         boolean roundOver = false;
         /** Ha nincs akciopontja a jelenlegi jatekosnak, iteralni kell egyet a jatekosok kozott
          */
         if (currentPlayer.getActionPoints() <= 0) {
-            roundOver = IterateCurrentPlayer();
+            roundOver = iterateCurrentPlayer();
             currentPlayer.setActionPoints(3);
         }
         /** Ha kör vége van
          */
         if (roundOver){
-            RoundOver();
+            roundOver();
         }
         return pumpLayed;
     }
 
-    public void setMechanicPoints(int points) {
+    public static void setMechanicPoints(int points) {
         mechanicPoints = points;
     }
     public int getMechanicPoints(){
@@ -261,42 +278,42 @@ public class Control {
         return saboteurPoints;
     }
 
-    public static void  AddPump(Pump p) {
+    public static void addPump(Pump p) {
         Control.pumps.add(p);
     }
-    public static void  AddPipe(Pipe p) {
+    public static void addPipe(Pipe p) {
         Control.pipes.add(p);
     }
 
-    private void connect(SystemPart s1, SystemPart s2) {
+    private static void connect(SystemPart s1, SystemPart s2) {
         s1.AddNeighbour(s2);
         s2.AddNeighbour(s1);
     }
 
-    public void setRand(boolean a) {
+    public static void setRand(boolean a) {
         randEnabled = a;
     }
 
-    public ArrayList<Mechanic> getMechanics(){
+    public List<Mechanic> getMechanics(){
         return mechanics;
     }
 
-    public ArrayList<Saboteur> getSaboteurs(){
+    public List<Saboteur> getSaboteurs(){
         return saboteurs;
     }
 
-    public ArrayList<Pipe> getPipes(){
+    public List<Pipe> getPipes(){
         return pipes;
     }
 
-    public ArrayList<Pump> getPumps(){
+    public List<Pump> getPumps(){
         return pumps;
     }
 
-    public ArrayList<Cistern> getCisterns(){
+    public List<Cistern> getCisterns(){
         return cisterns;
     }
-    public ArrayList<WaterSource> getWaterSources(){
+    public List<WaterSource> getWaterSources(){
         return waterSources;
     }
 
@@ -305,7 +322,7 @@ public class Control {
      * Iteralja a jatekosokat
      * @return
      */
-    public boolean IterateCurrentPlayer(){
+    public static boolean iterateCurrentPlayer(){
         if(mechanics.contains(currentPlayer)) {
             int mechIdx = mechanics.indexOf(currentPlayer);
             if (mechIdx == (mechanics.size() - 1)) {
@@ -338,21 +355,22 @@ public class Control {
      * @return String status
      */
     public String getStatus() {
-        String mehanicParts = "";
-        for (Mechanic m: mechanics) {
-            mehanicParts += m.getId() + " has: " + m.getPart() + "\n" ;
+        StringBuilder mechanicPartsBuilder = new StringBuilder();
+        for (Mechanic m : mechanics) {
+            mechanicPartsBuilder.append(m.getId())
+                                .append(" has: ")
+                                .append(m.getPart())
+                                .append("\n");
         }
-        String status =
-        "Round " + rounds + "/" + maxRound + "\n" +
+        String mechanicParts = mechanicPartsBuilder.toString();
+        return "Round " + rounds + "/" + maxRound + "\n" +
         "Mechanic points: " + mechanicPoints + "\n" +
         "Saboteur points: " + saboteurPoints + "\n" +
         "\n" +
         "Now playing: " + currentPlayer.id + "\n" +
         "Actions left: " + currentPlayer.getActionPoints() + "\n" +
         "\n" +
-        mehanicParts ;
-
-        return status;
+        mechanicParts ;
     }
 
     /**
@@ -369,7 +387,7 @@ public class Control {
      * Vege van-e a hateknak
      * @return vege van-e a jateknak
      */
-    public boolean GameOver() {
+    public boolean gameOver() {
         return gameOver;
     }
 }

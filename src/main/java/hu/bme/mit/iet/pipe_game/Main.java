@@ -9,6 +9,6 @@ public class Main {
          * Ennek a Run függvénye futtatja a játékot(Azaz először a beállításokat, majd a játékot)
          */
         GUIControl control = new GUIControl();
-        control.Run();
+        control.run();
     }
 }

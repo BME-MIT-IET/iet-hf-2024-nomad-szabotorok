@@ -26,6 +26,7 @@ public class Cistern extends SystemPart {
 	private boolean hasPipe = false;
 	private int pCount = 0;
 	private int timeLeft = 2;
+	private Random rand = new Random();
 
 	/**
 	 * Konstruktor, ami beállítja az id-t az osztály nevére és egy eltérő számra
@@ -39,9 +40,9 @@ public class Cistern extends SystemPart {
 	 * A csőnek mindkét szomszégjának magát állítja be,
 	 * hogy ne legyen szabad és ne folyon ki belőle a víz
 	 */
-	public void CreatePipe() {
+	public void createPipe() {
 		Pipe p = new Pipe();
-		Control.AddPipe(p);
+		Control.addPipe(p);
 		p.AddNeighbour(this);
 		p.AddNeighbour(this);
 		AddNeighbour(p);
@@ -54,9 +55,9 @@ public class Cistern extends SystemPart {
 	/**
 	 * Létrehoz egy új pumpát és eltárolja azt a tagváltozójába
 	 */
-	public void CreatePump() {
+	public void createPump() {
 		pump = new Pump();
-		Control.AddPump(pump);
+		Control.addPump(pump);
 	}
 
 	/**
@@ -81,9 +82,9 @@ public class Cistern extends SystemPart {
 	public int PullWater() {
 
 		int points = 0;
-		for (SystemPart pipe: neighbours) {
-			points += pipe.getWater();
-			pipe.setWater(0);
+		for (SystemPart _pipe: neighbours) {
+			points += _pipe.getWater();
+			_pipe.setWater(0);
 		}
 		return points;
 	}
@@ -92,16 +93,15 @@ public class Cistern extends SystemPart {
 	 * A control minden körben meghívja,
 	 * ha letelik az idő akkor generál egy pumpát vagy csövet
 	 */
-	public void Generate() {
-		Random rand = new Random();
+	public void generate() {
 		int coin = rand.nextInt(2);
 
 		if (--timeLeft == 0) {
 			if (coin ==  1 ) {
-				CreatePump();
+				createPump();
 			}
 			else {
-				CreatePipe();
+				createPipe();
 			}
 			timeLeft = 2;
 		}

@@ -11,9 +11,6 @@ package hu.bme.mit.iet.pipe_game;
 //
 //
 
-
-import java.util.Random;
-
 /**
  * A cső egy passzív elem
  * aktív elemek tudnak belepumpálni illetve kiszívni vizet
@@ -29,8 +26,8 @@ public class Pipe extends SystemPart {
 	private int water = 0;
 	private int capacity;
 	int timeTillNewBreak = 0;
-	enum State {normal, slippery, sticky}
-	State currentState = State.normal;
+	enum State {NORMAL, SLIPPERY, STICKY}
+	State currentState = State.NORMAL;
 
 	/**
 	 * Konstruktor, ami beállítja az id-t az osztály nevére és egy eltérő számra
@@ -53,12 +50,12 @@ public class Pipe extends SystemPart {
 	 *
 	 */
 	@Override
-	void setGlued() {currentState=State.sticky;}
+	void setGlued() {currentState=State.STICKY;}
 	@Override
-	void setSlippery() {currentState=State.slippery;}
-	boolean isSlippery() {return currentState==State.slippery;}
-	boolean isGlued() {return currentState==State.sticky;}
-	void setNormal() {currentState=State.normal;}
+	void setSlippery() {currentState=State.SLIPPERY;}
+	boolean isSlippery() {return currentState==State.SLIPPERY;}
+	boolean isGlued() {return currentState==State.STICKY;}
+	void setNormal() {currentState=State.NORMAL;}
 	@Override
 	public boolean isBroken() {
 		return broken;
@@ -119,6 +116,7 @@ public class Pipe extends SystemPart {
 	 * @param pipe az a cső amit lehelyezünk
 	 * @return false itt nem működik
 	 */
+	@Override
 	public boolean LayPipe(SystemPart pipe) {
 		return false;
 	}
@@ -137,7 +135,7 @@ public class Pipe extends SystemPart {
 		pump.AddNeighbour(this);
 
 		Pipe newPipe = new Pipe();
-		Control.AddPipe(newPipe);
+		Control.addPipe(newPipe);
 		pump.AddNeighbour(newPipe);
 
 		//olvashatóság és hatékonyság érdekében
@@ -172,14 +170,14 @@ public class Pipe extends SystemPart {
 		if(!players.isEmpty()) {
 			return false;
 		}
-		if (currentState == State.slippery) {
-			currentState=State.normal;
+		if (currentState == State.SLIPPERY) {
+			currentState=State.NORMAL;
 			return neighbours.get(0).AcceptPlayer(mover);
 		}
 		players.add(mover);
-		if (currentState == State.sticky) {
+		if (currentState == State.STICKY) {
 			mover.setGlued(1);
-			currentState=State.normal;
+			currentState=State.NORMAL;
 		}
 		return true;
 	}
