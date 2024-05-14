@@ -1,3 +1,5 @@
+package hu.bme.mit.iet.pipe_game;
+
 import java.io.IOException;
 
 public class Main {

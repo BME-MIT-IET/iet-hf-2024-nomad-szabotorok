@@ -1,3 +1,5 @@
+package hu.bme.mit.iet.pipe_game;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
