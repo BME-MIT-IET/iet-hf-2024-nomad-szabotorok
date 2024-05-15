@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 
 class CisternTest {
-	Cistern c;
+	Cistern c; //Ciszterna letrehozasa
 	
 	@BeforeEach
 	void initiate() {
