@@ -28,7 +28,7 @@ public class WaterSourceView extends ViewBase {
      * leszedi a rajta levő játékosokat, majd helyesen felteszi őket újra
      */
     @Override
-    public void Update() {
+    public void update() {
         button.setBounds(x, y, 50, 50);
         button.setBackground(Color.GREEN);
 
@@ -36,7 +36,7 @@ public class WaterSourceView extends ViewBase {
 
         view.getPanel().remove(button);
 
-        while (players.size() > 0){
+        while (!players.isEmpty()){
             view.getPanel().remove(players.get(0));
             players.remove(0);
         }
@@ -59,6 +59,7 @@ public class WaterSourceView extends ViewBase {
      * getter függvény
      * @return
      */
+    @Override
     public String getID() {
         return waterSource.getId();
     }

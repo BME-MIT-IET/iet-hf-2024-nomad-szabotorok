@@ -2,21 +2,20 @@ package hu.bme.mit.iet.pipe_game;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.List;
 
 public class View extends JPanel{
-    private ArrayList<ViewBase> fields;
+    private transient List<ViewBase> fields;
     private GUIControl guiControl;
     private JFrame frame;
     private JComboBox<String> commandSelect;
     private JLayeredPane pane;
     private JTextArea statusTextBox;
     private JLabel command;
-    private ArrayList<String > tempCommand = new ArrayList<>(); //a több parancsból állokhoz
-    private ArrayList<Line2D> lines = new ArrayList<>();
+    private List<String > tempCommand = new ArrayList<>(); //a több parancsból állokhoz
+    private transient List<Line2D> lines = new ArrayList<>();
 
     /**
      * Konstruktor
@@ -27,7 +26,7 @@ public class View extends JPanel{
     public View(GUIControl control) {
         guiControl = control;
         frame = guiControl.getFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         pane = new JLayeredPane();
         pane.setBounds(0,0,1000, 855);
@@ -38,7 +37,7 @@ public class View extends JPanel{
         statusTextBox.setFont(new Font("Arial", Font.BOLD, 16));
         statusTextBox.setBounds(800, 20, 180, 250);
 
-        commandSelect = new JComboBox<String>();
+        commandSelect = new JComboBox<>();
         commandSelect.setBounds(800, 330, 180, 20);
 
         commandSelect.addItem("Break pipe");
@@ -61,12 +60,7 @@ public class View extends JPanel{
         pane.add(command, Integer.valueOf(0));
         pane.add(commandSelect, Integer.valueOf(0));
 
-        commandSelect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                commitCommand((String) commandSelect.getSelectedItem());
-            }
-        });
+        commandSelect.addActionListener(e -> commitCommand((String) commandSelect.getSelectedItem()));
 
         this.setLayout(null);
         this.setOpaque(true);
@@ -87,7 +81,6 @@ public class View extends JPanel{
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        ArrayList<Line2D> lines = this.getlines();
         for (int i = 0; i < lines.size(); ++i) {
             g2d.draw(lines.get(i));
         }
@@ -97,12 +90,12 @@ public class View extends JPanel{
     /**
      * grafikusan frissíti a teljes játékmezőt minden elemével együtt
      */
-    public void UpdateAll() {
+    public void updateAll() {
         String str = guiControl.getStatus();
         statusTextBox.setText(str);
         lines.clear();
         for (ViewBase field :fields ) {
-                field.Update();
+                field.update();
         }
         frame.repaint();//test
         frame.revalidate();
@@ -113,22 +106,22 @@ public class View extends JPanel{
      * ,majd az új állapot szerint teljes grafikus frissítés
      * @param input
      */
-    public void ManageCommand(String input){
+    public void manageCommand(String input){
         tempCommand.add(input);
         guiControl.commitCommand(tempCommand);
         tempCommand.clear();
-        UpdateAll();
+        updateAll();
     }
-    public void ManageLongCommand(){
+    public void manageLongCommand(){
         guiControl.commitCommand(tempCommand);
         tempCommand.clear();
-        UpdateAll();
+        updateAll();
     }
     public void commitCommand(String input) {
         switch (input){
             case "Break pipe":
                 tempCommand.clear();
-                ManageCommand("breakpipe");
+                manageCommand("breakpipe");
                 break;
             case "Carry pipe"://több infó kel egynél
                 tempCommand.clear();
@@ -136,15 +129,15 @@ public class View extends JPanel{
                 break;
             case "Carry pump":
                 tempCommand.clear();
-                ManageCommand("carrypump");
+                manageCommand("carrypump");
                 break;
             case "Lay pipe":
                 tempCommand.clear();
-                ManageCommand("laypipe");
+                manageCommand("laypipe");
                 break;
             case "Lay pump":
                 tempCommand.clear();
-                ManageCommand("laypump");
+                manageCommand("laypump");
                 break;
             case "Move"://több infó is kellene majd
                 tempCommand.clear();
@@ -156,19 +149,19 @@ public class View extends JPanel{
                 break;
             case "Repair":
                 tempCommand.clear();
-                ManageCommand("repair");
+                manageCommand("repair");
                 break;
             case "Make pipe slippery":
                 tempCommand.clear();
-                ManageCommand("makeslippery");
+                manageCommand("makeslippery");
                 break;
             case "Glue pipe":
                 tempCommand.clear();
-                ManageCommand("makegluey");
+                manageCommand("makegluey");
                 break;
             case "Pass":
                 tempCommand.clear();
-                ManageCommand("pass");
+                manageCommand("pass");
                 break;
             default:
             break;
@@ -180,7 +173,7 @@ public class View extends JPanel{
      * setter függvény
      * @param things
      */
-    public void setFields(ArrayList<ViewBase> things) {
+    public void setFields(List<ViewBase> things) {
         fields = things;
     }
 
@@ -204,7 +197,7 @@ public class View extends JPanel{
      * getter függvény
      * @return
      */
-    public ArrayList<ViewBase> getFields(){
+    public List<ViewBase> getFields(){
         return fields;
     }
 
@@ -220,7 +213,7 @@ public class View extends JPanel{
      * getter függvény
      * @return
      */
-    public ArrayList<Line2D> getlines(){
+    public List<Line2D> getlines(){
         return lines;
     }
 
@@ -228,7 +221,7 @@ public class View extends JPanel{
      * getter függvény
      * @return
      */
-    public ArrayList<String> getTempCommand(){ return tempCommand; }
+    public List<String> getTempCommand(){ return tempCommand; }
 
     /**
      * új command hozzáadása a tempCommand temporary commandokat tartalmazó listához

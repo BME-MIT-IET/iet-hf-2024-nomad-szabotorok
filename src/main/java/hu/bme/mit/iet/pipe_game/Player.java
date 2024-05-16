@@ -29,7 +29,7 @@ public abstract class Player {
 	 */
 	void setPos(SystemPart next){
 		position = next;
-		next.AcceptPlayer(this);
+		next.acceptPlayer(this);
 	}
 
 	/**
@@ -62,11 +62,11 @@ public abstract class Player {
 	 * ha épp le van ragadva akkor nem tud lépni
 	 * @param newPos az új hely, ahova mozog a játékos.
 	 */
-	public void Move(SystemPart newPos) {
+	public void move(SystemPart newPos) {
 		if (glued != 0)
 			return;
-		if (newPos.AcceptPlayer(this)){
-			position.RemovePlayer(this);
+		if (newPos.acceptPlayer(this)){
+			position.removePlayer(this);
 			position = newPos;
 		}
 	}
@@ -76,56 +76,56 @@ public abstract class Player {
 	 * @param from a cső, ahonnan folyjon a víz.
 	 * @param to a cső, ahova menjen a víz.
 	 */
-	public void ChangePumpFlow(Pipe from, Pipe to) {
-		position.AcceptNewFlow(from, to);
+	public void changePumpFlow(Pipe from, Pipe to) {
+		position.acceptNewFlow(from, to);
 	}
 
 	/**
 	 * Amennyiben a leszármazott nem tud csövet kilyukasztani, akkor kiírja, hogy ezt nem teheti meg.
 	 */
-	public void BreakPipe() {
-		position.BreakPipe();
+	public void breakPipe() {
+		position.breakPipe();
 	}
 
 	/**
 	 * Amennyiben a leszármazott nem tud csövet javítani, akkor kiírja, hogy ezt nem teheti meg.
 	 */
-	public void Repair() { }
+	public void repair() { }
 
 	/**
 	 * Amennyiben a leszármazott nem tud felvenni csövet, akkor kiírja, hogy ezt nem teheti meg.
 	 * @param pipe
 	 */
-	public void CarryPipeEnd(SystemPart pipe) {	}
+	public void carryPipeEnd(SystemPart pipe) {	}
 
 	/**
 	 * Amennyiben a leszármazott nem tud csövet lerakni, akkor kiírja, hogy ezt nem teheti meg.
 	 * @return
 	 */
-	public boolean LayPipe() {
+	public boolean layPipe() {
 		return false;
 	}
 
 	/**
 	 * Amennyiben a leszármazott nem tud pumpát felvenni, akkor kiírja, hogy ezt nem teheti meg.
 	 */
-	public void CarryPump() { }
+	public void carryPump() { }
 
 	/**
 	 * Amennyiben a leszármazott nem tud pumpát lerakni, akkor kiírja, hogy ezt nem teheti meg.
 	 * @return
 	 */
-	public SystemPart LayPump() {
+	public SystemPart layPump() {
 		return null;
 	}
 
 	/**
 	 * Ragadóssá teszi a csövet amin áll a játékos
 	 */
-	public void GluePipe() {
+	public void gluePipe() {
 		position.setGlued();
 	}
-	public void MakePipeSlippery() {}
+	public void makePipeSlippery() {}
 	public int getActionPoints() {
 		return actionPoints;
 	}

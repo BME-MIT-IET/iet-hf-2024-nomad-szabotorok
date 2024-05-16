@@ -69,8 +69,8 @@ public class Control {
         connect(pump2, pipe3);
         connect(pump2, pipe5);
 
-        pump1.AcceptNewFlow(pipe1,pipe4);
-        pump2.AcceptNewFlow(pipe2,pipe5);
+        pump1.acceptNewFlow(pipe1,pipe4);
+        pump2.acceptNewFlow(pipe2,pipe5);
 
         connect(c1, pipe4);
         connect(c2, pipe5);
@@ -107,19 +107,19 @@ public class Control {
 
     public static void handlePumps() {
         for (Pump p:pumps) {
-            saboteurPoints += p.PushWater();
+            saboteurPoints += p.pushWater();
         }
         for (Pump p:pumps) {
-            p.PullWater();
+            p.pullWater();
             // pump random eltörése
             pumpBreak--;
             if (randEnabled) {
                 if(rnd.nextInt(10) > 7)
-                    p.BreakPump();
+                    p.breakPump();
             }
             else {
                 if (pumpBreak == 0)
-                    p.BreakPump();
+                    p.breakPump();
             }
         }
     } 
@@ -127,7 +127,7 @@ public class Control {
         /** ciszternák
          */
         for (Cistern c:cisterns) {
-            mechanicPoints += c.PullWater();
+            mechanicPoints += c.pullWater();
             c.generate();
         }
         /** pumpák
@@ -137,7 +137,7 @@ public class Control {
         /** Vízforrás
          */
         for (WaterSource ws:waterSources) {
-            saboteurPoints += ws.PushWater();
+            saboteurPoints += ws.pushWater();
         }
         /** Csövek
          */
@@ -181,7 +181,7 @@ public class Control {
             if (!p2found && id.equals(pipe2.id))
                 p2found = true;
             if (p1found && p2found) {
-                currentPlayer.ChangePumpFlow(pipe1, pipe2);
+                currentPlayer.changePumpFlow(pipe1, pipe2);
                 break;
             }
         }
@@ -191,19 +191,19 @@ public class Control {
         int pumpLayed = -1;
         switch (command.get(0)){
             case "breakpipe":
-                currentPlayer.BreakPipe();
+                currentPlayer.breakPipe();
                 break;
             case "carrypipe":
-                currentPlayer.CarryPipeEnd(pipes.get(Integer.parseInt(command.get(2))));
+                currentPlayer.carryPipeEnd(pipes.get(Integer.parseInt(command.get(2))));
                 break;
             case "carrypump":
-                currentPlayer.CarryPump();
+                currentPlayer.carryPump();
                 break;
             case "laypipe":
-                currentPlayer.LayPipe();
+                currentPlayer.layPipe();
                 break;
             case "laypump":
-                SystemPart pump = currentPlayer.LayPump();
+                SystemPart pump = currentPlayer.layPump();
                 if (pumps.contains(pump))
                     pumpLayed = pumps.indexOf(pump);
                 break;
@@ -218,20 +218,20 @@ public class Control {
                 if (moveTo == null) {//ha nem erheto el breakelunk
                     break;
                 }
-                currentPlayer.Move(moveTo);//jatekos probal mozogni
+                currentPlayer.move(moveTo);//jatekos probal mozogni
                 break;
             }
             case "pumpchangeflow":
                 pumpChangeFlow(command);
                 break;
             case "repair":
-                currentPlayer.Repair();
+                currentPlayer.repair();
                 break;
             case "makeslippery":
-                currentPlayer.MakePipeSlippery();
+                currentPlayer.makePipeSlippery();
                 break;
             case "makegluey":
-                currentPlayer.GluePipe();
+                currentPlayer.gluePipe();
                 break;
             case "pass":
                 // passed the turn
@@ -286,8 +286,8 @@ public class Control {
     }
 
     private static void connect(SystemPart s1, SystemPart s2) {
-        s1.AddNeighbour(s2);
-        s2.AddNeighbour(s1);
+        s1.addNeighbour(s2);
+        s2.addNeighbour(s1);
     }
 
     public static void setRand(boolean a) {

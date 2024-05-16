@@ -5,7 +5,7 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Line2D;
-import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.sqrt;
 
@@ -27,7 +27,7 @@ public class PipeView extends ViewBase {
         nev = new JLabel();
     }
 
-    public void drawFields(ArrayList<ViewBase> fields, String id, int i) {
+    public void drawFields(List<ViewBase> fields, String id, int i) {
         for (ViewBase f: fields) {
             if (id.equals(f.getID())){
                 int vX = x-f.getX();
@@ -60,7 +60,7 @@ public class PipeView extends ViewBase {
     }
 
     public void drawLinesAndArrows() {
-        ArrayList<ViewBase> fields = view.getFields();
+        List<ViewBase> fields = view.getFields();
         for (int i = 0; i < pipe.neighbours.size(); ++i){
             String id = pipe.getNeighbours().get(i).getId();
             drawFields(fields, id, i);
@@ -73,7 +73,7 @@ public class PipeView extends ViewBase {
      * játékosok helyes feltétele a jelenlegi állapotnak megfelelően
      */
     @Override
-    public void Update() {
+    public void update() {
         button.setBounds(x, y, 50, 50);
         button.setBackground(Color.LIGHT_GRAY);
         button.setFont(new Font("Arial", Font.BOLD, 10));

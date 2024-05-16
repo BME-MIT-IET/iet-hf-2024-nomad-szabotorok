@@ -19,7 +19,7 @@ public class WaterSource extends SystemPart {
 	 * @return a vizmennyiseg, ami a lyuaks csöveket kifolyt
 	 */
 	@Override
-	public int PushWater() {
+	public int pushWater() {
 		int points = 0;
 		for (SystemPart pipe: neighbours) {
 			if (pipe.isBroken()) {

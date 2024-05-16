@@ -84,7 +84,7 @@ public class Pipe extends SystemPart {
 	 * Kilyukasztja a csovet
 	 */
 	@Override
-	public void BreakPipe() {
+	public void breakPipe() {
 		if (timeTillNewBreak != 0)
 			return;
 		broken = true;
@@ -97,7 +97,7 @@ public class Pipe extends SystemPart {
 	 * és beállítja hogy 2 körig nem törhet el
 	 */
 	@Override
-	public void Repair() {
+	public void repair() {
 		broken = false;
 		timeTillNewBreak = 2;
 	}
@@ -107,7 +107,7 @@ public class Pipe extends SystemPart {
 	 * @param whichEnd aktív elem, amelyik szomszédnál felvették a cső végét
 	 */
 	@Override
-	public boolean CarryPipeEnd(SystemPart whichEnd) {
+	public boolean carryPipeEnd(SystemPart whichEnd) {
 		return false;
 	}
 
@@ -117,7 +117,7 @@ public class Pipe extends SystemPart {
 	 * @return false itt nem működik
 	 */
 	@Override
-	public boolean LayPipe(SystemPart pipe) {
+	public boolean layPipe(SystemPart pipe) {
 		return false;
 	}
 
@@ -131,24 +131,24 @@ public class Pipe extends SystemPart {
 	 * @return ez lehetne void nem?
 	 */
 	@Override
-	public boolean LayPump(SystemPart pump) {
-		pump.AddNeighbour(this);
+	public boolean layPump(SystemPart pump) {
+		pump.addNeighbour(this);
 
 		Pipe newPipe = new Pipe();
 		Control.addPipe(newPipe);
-		pump.AddNeighbour(newPipe);
+		pump.addNeighbour(newPipe);
 
 		//olvashatóság és hatékonyság érdekében
 		SystemPart exneighbour = neighbours.get(0);
 
-		exneighbour.RemoveNeighbour(this);
-		exneighbour.AddNeighbour(newPipe);
+		exneighbour.removeNeighbour(this);
+		exneighbour.addNeighbour(newPipe);
 
-		newPipe.AddNeighbour(pump);
-		newPipe.AddNeighbour(exneighbour);
+		newPipe.addNeighbour(pump);
+		newPipe.addNeighbour(exneighbour);
 
-		RemoveNeighbour(exneighbour);
-		AddNeighbour(pump);
+		removeNeighbour(exneighbour);
+		addNeighbour(pump);
 
 		return true; // ez a fgv már lehetne void mert a mechanicnál teszteljük hogy va e nála pumpa itt már nem hasalhat el a művelet
 	}
@@ -163,7 +163,7 @@ public class Pipe extends SystemPart {
 	 * @return sikeres volt-e a csőre lépés
 	 */
 	@Override
-	public boolean AcceptPlayer(Player mover) {
+	public boolean acceptPlayer(Player mover) {
 		if (carried){
 			return false;
 		}
@@ -172,7 +172,7 @@ public class Pipe extends SystemPart {
 		}
 		if (currentState == State.SLIPPERY) {
 			currentState=State.NORMAL;
-			return neighbours.get(0).AcceptPlayer(mover);
+			return neighbours.get(0).acceptPlayer(mover);
 		}
 		players.add(mover);
 		if (currentState == State.STICKY) {

@@ -46,8 +46,8 @@ public class Mechanic extends Player {
 	 * Megjavítja a csövet ahol áll.
 	 */
 	@Override
-	public void Repair() {
-		position.Repair();
+	public void repair() {
+		position.repair();
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class Mechanic extends Player {
 	 * @param pipe a cső, aminek az egyik végét felveszi a szerelő.
 	 */
 	@Override
-	public void CarryPipeEnd(SystemPart pipe) {
-		if(position.CarryPipeEnd(pipe)) {
+	public void carryPipeEnd(SystemPart pipe) {
+		if(position.carryPipeEnd(pipe)) {
 			carriedPart = pipe;
 			hasPipe = true;
 		}
@@ -67,9 +67,9 @@ public class Mechanic extends Player {
 	 * @return Visszaadja, hogy sikerült-e letenni a csövet.
 	 */
 	@Override
-	public boolean LayPipe() {
+	public boolean layPipe() {
 		if (!hasPipe) return false;
-		if (position.LayPipe(carriedPart)) {
+		if (position.layPipe(carriedPart)) {
 			hasPipe = false;
 			carriedPart = null;
 			return true;
@@ -81,8 +81,8 @@ public class Mechanic extends Player {
 	 * A szerelő felveszi a generált pumpát, onnan, ahol éppen tartózkodik.
 	 */
 	@Override
-	public void CarryPump() {
-		carriedPart = position.CarryPump();
+	public void carryPump() {
+		carriedPart = position.carryPump();
 		hasPump = true;
 	}
 
@@ -91,9 +91,9 @@ public class Mechanic extends Player {
 	 * @return Visszaadja, hogy sikerült-e letenni a pumpát.
 	 */
 	@Override
-	public SystemPart LayPump() {
+	public SystemPart layPump() {
 		if (carriedPart == null || !hasPump) return null;
-		position.LayPump(carriedPart);
+		position.layPump(carriedPart);
 		hasPump = false;
 		SystemPart pump = carriedPart;
 		carriedPart = null;

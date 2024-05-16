@@ -43,10 +43,10 @@ public class Cistern extends SystemPart {
 	public void createPipe() {
 		Pipe p = new Pipe();
 		Control.addPipe(p);
-		p.AddNeighbour(this);
-		p.AddNeighbour(this);
-		AddNeighbour(p);
-		AddNeighbour(p);
+		p.addNeighbour(this);
+		p.addNeighbour(this);
+		addNeighbour(p);
+		addNeighbour(p);
 		pipe = p;
 		hasPipe = true;
 		pCount++;
@@ -65,7 +65,7 @@ public class Cistern extends SystemPart {
 	 * @return visszadjuk a pumpát
 	 */
 	@Override
-	public Pump CarryPump() {
+	public Pump carryPump() {
 
 		Pump p = pump;
 		pump = null;
@@ -79,7 +79,7 @@ public class Cistern extends SystemPart {
 	 * @return visszadja hogy mennyi vizet gyűjtött össze
 	 */
 	@Override
-	public int PullWater() {
+	public int pullWater() {
 
 		int points = 0;
 		for (SystemPart _pipe: neighbours) {

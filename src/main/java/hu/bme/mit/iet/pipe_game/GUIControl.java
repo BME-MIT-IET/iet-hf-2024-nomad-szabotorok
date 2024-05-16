@@ -2,8 +2,6 @@ package hu.bme.mit.iet.pipe_game;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,20 +52,8 @@ public class GUIControl extends JFrame{
          * ActionListener-ek a gombokhoz
          * kilepes es start
          */
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispatchEvent(new WindowEvent(GUIControl.this, WindowEvent.WINDOW_CLOSING));
-            }
-        });
-
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                settings(menu);
-            }
-        });
-
+        exit.addActionListener(e -> dispatchEvent(new WindowEvent(GUIControl.this, WindowEvent.WINDOW_CLOSING)));
+        start.addActionListener(e -> settings(menu));
     }
 
     /**
@@ -126,16 +112,14 @@ public class GUIControl extends JFrame{
         /**
          * 3 comboboxhoz ActionListener
          */
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        start.addActionListener(e -> {
                 rounds = (int)roundNum.getSelectedItem();
                 sabCount = (int)saboteurCount.getSelectedItem();
                 mechCount = (int)mechanicCount.getSelectedItem();
                 remove(menu);
                 startGame();
             }
-        });
+        );
 
         this.add(menu);
         this.revalidate();
@@ -189,7 +173,7 @@ public class GUIControl extends JFrame{
         things.get(10).setCoords(750, 0);
 
         gameField.setFields(things);
-        gameField.UpdateAll();
+        gameField.updateAll();
     }
 
     public void handlePutDownPipe(int ertek) throws NullPointerException {
@@ -217,7 +201,7 @@ public class GUIControl extends JFrame{
         String n1 = posp.getNeighbours().get(0).getId();
         String n2 = newp.getNeighbours().get(1).getId();
 
-        ArrayList<ViewBase> fields = gameField.getFields();
+        List<ViewBase> fields = gameField.getFields();
         for (ViewBase f : fields) {
             String id = f.getID();
             if (id.equals(n1)) {
@@ -259,7 +243,7 @@ public class GUIControl extends JFrame{
         for (int i = 0; i < cisterns.size(); ++i){
 
             if ( !cisterns.get(i).hasPump() && cisterns.get(i).hasP()) {
-                ArrayList<ViewBase> fields = gameField.getFields();
+                List<ViewBase> fields = gameField.getFields();
                 PipeView pw = new PipeView(gameField, cisterns.get(i).getPipe());
                 int x = 0;
                 int y = 0;

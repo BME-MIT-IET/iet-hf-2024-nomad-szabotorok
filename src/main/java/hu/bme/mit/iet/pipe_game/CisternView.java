@@ -31,7 +31,7 @@ public class CisternView extends ViewBase{
      * frissíti a part JButtont a jelenlegi állapotoknak megfelelően
      */
     @Override
-    public void Update() {
+    public void update() {
         button.setBounds(x,y,50,50);
         button.setBackground(Color.RED);
 
