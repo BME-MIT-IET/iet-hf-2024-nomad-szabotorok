@@ -1,1 +1,5 @@
 *.class
+/src/.idea
+/.idea
+/out
+*.iml
