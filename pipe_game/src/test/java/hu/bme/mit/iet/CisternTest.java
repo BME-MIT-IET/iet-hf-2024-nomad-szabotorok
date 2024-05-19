@@ -15,7 +15,6 @@ import org.mockito.internal.matchers.Any;
 import static org.mockito.AdditionalMatchers.and;
 
 import java.util.List;
-import java.util.Random;
 
 class CisternTest {
 	private Cistern cistern; //Ciszterna letrehozasa

@@ -17,7 +17,6 @@ import net.bytebuddy.utility.RandomString;
 import static org.mockito.AdditionalMatchers.and;
 
 import java.util.List;
-import java.util.Random;
 
 public class MechanicTest {
 
@@ -88,9 +87,7 @@ public class MechanicTest {
     @Test
     void testGetPart() {
         assertEquals("nothing", mechanic.getPart());//nincs semmi a kezeben
-        Random rand = new Random();
-		int randomID = rand.nextInt(300);
-        String stringID=String.valueOf(randomID);
+        String stringID="100";
         mockPipe.id=stringID;
         mechanic.position=mockCistern;//cisternan all
         when(mockCistern.CarryPipeEnd(mockPipe)).thenReturn(true);//cistern engedi, hogy felvegyek
@@ -102,9 +99,7 @@ public class MechanicTest {
     @Test
     void testSetPump() {
         assertEquals("nothing", mechanic.getPart());//nincs semmi a kezeben
-        Random rand = new Random();
-		int randomID = rand.nextInt(300);
-        String stringID=String.valueOf(randomID);
+        String stringID="100";
         mockPump.id=stringID;
         mechanic.setPump(mockPump);//felveszi a 100-as id-ú
         assertEquals(stringID, mechanic.getPart());
