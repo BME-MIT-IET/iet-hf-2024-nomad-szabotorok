@@ -52,7 +52,9 @@ class PipeTest {
         pipe.timeTillNewBreak=10;
         pipe.breakPipe();
         assertEquals(false, pipe.isBroken());//amikor meg van a torhetetlensegi idobol, akkor nem rontja el a fgv 
+        pipe.Repair();
         pipe.timeTillNewBreak=0;
+        pipe.BreakPipe();
         assertEquals(true, pipe.isBroken());
     }
     */
