@@ -18,31 +18,31 @@ import java.util.List;
 import java.util.Random;
 
 class CisternTest {
-	private Cistern mockCistern; //Ciszterna letrehozasa
+	private Cistern cistern; //Ciszterna letrehozasa
 	
 	@BeforeEach
 	void initiate() {
-		mockCistern=mock(Cistern.class);
+		cistern=new Cistern();
 	}
 	@Test
 	void testCreatePump() {
-		mockCistern.CreatePump();
-		assertEquals(true, mockCistern.hasPump());
+		cistern.CreatePump();
+		assertEquals(true, cistern.hasPump());
 	}
 	
 	@Test
 	void testCarryPump() {
-		mockCistern.CreatePump();
-		assertInstanceOf(Pump.class,mockCistern.CarryPump());
+		cistern.CreatePump();
+		assertInstanceOf(Pump.class,cistern.CarryPump());
 	}
 	@Test
 	void testPullWaterEmpty() {
 		//üressel
-		assertEquals(0,mockCistern.PullWater());
+		assertEquals(0,cistern.PullWater());
 	}
 	void testPullWater() {
 		//TODO osszetett, mert eloszor csinalni kell meg csovet, amelybe vizet kell tenni
-		assertEquals(0,mockCistern.PullWater());
+		assertEquals(0,cistern.PullWater());
 	}
 
 	@Test
@@ -56,9 +56,9 @@ class CisternTest {
 
 	@Test
 	void testCreatePipe() {
-		assertEquals(false,mockCistern.hasP());//mielott a create pipe meg van hivva ne legyen cso
-		mockCistern.CreatePipe();
-		assertEquals(true,mockCistern.hasP());
+		assertEquals(false,cistern.hasP());//mielott a create pipe meg van hivva ne legyen cso
+		cistern.CreatePipe();
+		assertEquals(true,cistern.hasP());
 	}
 
 
@@ -69,34 +69,34 @@ class CisternTest {
 
 	@Test
 	void testHasPump() {
-		assertEquals(false,mockCistern.hasPump());
-		mockCistern.CreatePump();
-		assertEquals(true,mockCistern.hasPump());
-		mockCistern.CarryPump();
-		assertEquals(false,mockCistern.hasPump());
+		assertEquals(false,cistern.hasPump());
+		cistern.CreatePump();
+		assertEquals(true,cistern.hasPump());
+		cistern.CarryPump();
+		assertEquals(false,cistern.hasPump());
 	}
 
 	@Test
 	void testGetPipe() {
-		assertEquals(null,mockCistern.getPipe());
-		mockCistern.CreatePipe();
-		assertInstanceOf(Pipe.class,mockCistern.getPipe() );
-		assertNotEquals(null,mockCistern.getPipe());
+		assertEquals(null,cistern.getPipe());
+		cistern.CreatePipe();
+		assertInstanceOf(Pipe.class,cistern.getPipe() );
+		assertNotEquals(null,cistern.getPipe());
 	}
 
 	@Test
 	void testHasP() {
-		assertEquals(false,mockCistern.hasP());
-		mockCistern.CreatePipe();
-		assertEquals(true,mockCistern.hasP());
+		assertEquals(false,cistern.hasP());
+		cistern.CreatePipe();
+		assertEquals(true,cistern.hasP());
 	}
 
 	@Test
 	void testGetpCount() {
-		assertEquals(0,mockCistern.getpCount());
-		mockCistern.CreatePipe();
-		mockCistern.CreatePipe();
-		assertEquals(2,mockCistern.getpCount());
+		assertEquals(0,cistern.getpCount());
+		cistern.CreatePipe();
+		cistern.CreatePipe();
+		assertEquals(2,cistern.getpCount());
 	}
 
 }
