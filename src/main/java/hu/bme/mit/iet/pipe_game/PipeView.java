@@ -1,11 +1,11 @@
-import javax.sound.sampled.Line;
+package hu.bme.mit.iet.pipe_game;
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
-import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.sqrt;
 
@@ -27,13 +27,53 @@ public class PipeView extends ViewBase {
         nev = new JLabel();
     }
 
+    public void drawFields(List<ViewBase> fields, String id, int i) {
+        for (ViewBase f: fields) {
+            if (id.equals(f.getID())){
+                int vX = x-f.getX();
+                int vY = y-f.getY();
+                double hossz = sqrt((x-f.getX())*(x-f.getX())+(double)(y-f.getY())*(y-f.getY()));
+                int eX = (int) ((vX/hossz)*26);
+                int eY = (int) ((vY/hossz)*26);
+                Line2D line = new Line2D.Float(x+25-(float)eX,y+25-(float)eY,f.getX()+25+(float)eX,f.getY()+25+(float)eY);
+                view.addLine(line);
+
+                String[] splitted = id.split(" ");
+                if (splitted[0].equals("pump")) {
+                    SystemPart pump = pipe.getNeighbours().get(i);
+
+                    if (pump.getFrom() != null && pump.getFrom().equals(pipe.getId())) {
+                        Line2D lineend1 = new Line2D.Float(f.getX() + 25 + (float)eX, f.getY() + 25 + (float)eY, f.getX() + 25 + 2 * eX - (float)eY / 2, f.getY() + 25 + 2 * eY + (float)eX / 2);
+                        Line2D lineend2 = new Line2D.Float(f.getX() + 25 + 2 * eX + (float)eY / 2, f.getY() + 25 + 2 * eY - (float)eX / 2, f.getX() + 25 + (float)eX, f.getY() + 25 + (float)eY);
+                        view.addLine(lineend1);
+                        view.addLine(lineend2);
+                    }
+                    else if (pump.getTo() != null && pump.getTo().equals(pipe.getId())) {
+                        Line2D lineend1 = new Line2D.Float(x + 25 - (float)eX, y + 25 - (float)eY, x+ 25 - 2 * eX - (float)eY / 2, y+ 25 - 2 * eY + (float)eX / 2);
+                        Line2D lineend2 = new Line2D.Float(x + 25 - 2 * eX + (float)eY / 2, y + 25 - 2 * eY - (float)eX / 2, x + 25 - (float)eX, y + 25 - (float)eY);
+                        view.addLine(lineend1);
+                        view.addLine(lineend2);
+                    }
+                }
+            }
+        }
+    }
+
+    public void drawLinesAndArrows() {
+        List<ViewBase> fields = view.getFields();
+        for (int i = 0; i < pipe.neighbours.size(); ++i){
+            String id = pipe.getNeighbours().get(i).getId();
+            drawFields(fields, id, i);
+        }
+    }
+
     /**
      * A példány jelenlegi állapotához kötődő grafikus frissítés
      * effectek beállítása
      * játékosok helyes feltétele a jelenlegi állapotnak megfelelően
      */
     @Override
-    public void Update() {
+    public void update() {
         button.setBounds(x, y, 50, 50);
         button.setBackground(Color.LIGHT_GRAY);
         button.setFont(new Font("Arial", Font.BOLD, 10));
@@ -55,7 +95,7 @@ public class PipeView extends ViewBase {
         }
 
         view.getPanel().remove(nev);
-        if (pipe.players.size() == 0)
+        if (pipe.players.isEmpty())
             button.setText(pipe.getId());
         else {
             button.setText(pipe.getId());
@@ -69,39 +109,7 @@ public class PipeView extends ViewBase {
         /**
          * Vonalak es nyilak kirajzolasa
          */
-        ArrayList<ViewBase> fields = view.getFields();
-        for (int i = 0; i < pipe.neighbours.size(); ++i){
-            String id = pipe.getNeighbours().get(i).getId();
-            for (ViewBase f: fields) {
-                if (id.equals(f.getID())){
-                    int vX = x-f.getX();
-                    int vY = y-f.getY();
-                    double hossz = sqrt((x-f.getX())*(x-f.getX())+(y-f.getY())*(y-f.getY()));
-                    int eX = (int) ((vX/hossz)*26);
-                    int eY = (int) ((vY/hossz)*26);
-                    Line2D line = new Line2D.Float(x+25-eX,y+25-eY,f.getX()+25+eX,f.getY()+25+eY);
-                    view.addLine(line);
-
-                    String[] splitted = id.split(" ");
-                    if (splitted[0].equals("pump")) {
-                        SystemPart pump = pipe.getNeighbours().get(i);
-
-                        if (pump.getFrom() != null && pump.getFrom().equals(pipe.getId())) {
-                            Line2D lineend1 = new Line2D.Float(f.getX() + 25 + eX, f.getY() + 25 + eY, f.getX() + 25 + 2 * eX - eY / 2, f.getY() + 25 + 2 * eY + eX / 2);
-                            Line2D lineend2 = new Line2D.Float(f.getX() + 25 + 2 * eX + eY / 2, f.getY() + 25 + 2 * eY - eX / 2, f.getX() + 25 + eX, f.getY() + 25 + eY);
-                            view.addLine(lineend1);
-                            view.addLine(lineend2);
-                        }
-                        else if (pump.getTo() != null && pump.getTo().equals(pipe.getId())) {
-                            Line2D lineend1 = new Line2D.Float(x + 25 - eX, y + 25 - eY, x+ 25 - 2 * eX - eY / 2, y+ 25 - 2 * eY + eX / 2);
-                            Line2D lineend2 = new Line2D.Float(x + 25 - 2 * eX + eY / 2, y + 25 - 2 * eY - eX / 2, x + 25 - eX, y + 25 - eY);
-                            view.addLine(lineend1);
-                            view.addLine(lineend2);
-                        }
-                    }
-                }
-            }
-        }
+        drawLinesAndArrows();
     }
 
     /**
