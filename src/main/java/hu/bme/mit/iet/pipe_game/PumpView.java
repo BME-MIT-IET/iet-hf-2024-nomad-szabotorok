@@ -1,46 +1,57 @@
+package hu.bme.mit.iet.pipe_game;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-public class WaterSourceView extends ViewBase {
-    private WaterSource waterSource;
+public class PumpView extends ViewBase{
+    private Pump pump;
     private JButton button;
     private ArrayList<JLabel> players;
 
     /**
      * Konstruktor, ami létrehozza az osztály grafikus megjelenéséhez szükséges swing elemeket
      * @param view
-     * @param waterSource
+     * @param pump
      */
-    public WaterSourceView(View view, WaterSource waterSource) {
+    public PumpView(View view, Pump pump){
         super(view);
-        this.waterSource = waterSource;
+        this.pump = pump;
         button = new JButton();
         button.addActionListener(this);
         players = new ArrayList<>();
     }
 
     /**
-     * Grafikusan frissíti a példány állapotát:
-     * leszedi a rajta levő játékosokat, majd helyesen felteszi őket újra
+     * grafikusan frissíti az adott példányt a jelenlegi állapotnak megfelelően
+     * játékosok újrahelyezése
      */
     @Override
-    public void Update() {
-        button.setBounds(x, y, 50, 50);
-        button.setBackground(Color.GREEN);
+    public void update() {
+        button.setBounds(x,y,50,50);
+        button.setBackground(new Color(89, 158, 227,255));
+        if (pump.isBroken()) {
+            button.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 3));
+        }
+        else {
+            button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        }
 
-        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-
+        /**
+         * Eloszor levesszuk az elozo dolgokat
+         */
         view.getPanel().remove(button);
 
-        while (players.size() > 0){
+        while (!players.isEmpty()){
             view.getPanel().remove(players.get(0));
             players.remove(0);
         }
-
-        for (int i = 0; i < waterSource.players.size(); ++i) {
-            JLabel player = new JLabel(waterSource.players.get(i).getId());
+        /**
+         * Majd feltesszuk oket a pane-re
+         */
+        for (int i = 0; i < pump.players.size(); ++i){
+            JLabel player = new JLabel(pump.players.get(i).getId());
             player.setFont(new Font("Arial", Font.BOLD, 10));
             if (i < 3)
                 player.setBounds(x+1+i*16, y, 16, 16);
@@ -57,15 +68,16 @@ public class WaterSourceView extends ViewBase {
      * getter függvény
      * @return
      */
-    public String getID() {
-        return waterSource.getId();
+    @Override
+    public String getID(){
+        return pump.getId();
     }
 
     /**
-     * megvalósítja az ActionListener interface-t
+     * ActionListener interface megvalósítása
      * @param e the event to be processed
      */
     public void actionPerformed(ActionEvent e){
-        action(waterSource.getId());
+        action(pump.getId());
     }
 }

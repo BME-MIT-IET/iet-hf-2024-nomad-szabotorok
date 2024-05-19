@@ -1,3 +1,5 @@
+package hu.bme.mit.iet.pipe_game;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +31,7 @@ public class CisternView extends ViewBase{
      * frissíti a part JButtont a jelenlegi állapotoknak megfelelően
      */
     @Override
-    public void Update() {
+    public void update() {
         button.setBounds(x,y,50,50);
         button.setBackground(Color.RED);
 
@@ -40,7 +42,7 @@ public class CisternView extends ViewBase{
          */
         view.getPanel().remove(button);
 
-        while (players.size() > 0){
+        while (!players.isEmpty()){
             view.getPanel().remove(players.get(0));
             players.remove(0);
         }
@@ -77,6 +79,7 @@ public class CisternView extends ViewBase{
      * getter fügvény ID-re
      * @return ID-t adja vissza
      */
+    @Override
     public String getID(){
         return cistern.getId();
     }
