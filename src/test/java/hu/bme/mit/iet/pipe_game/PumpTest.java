@@ -1,13 +1,12 @@
-package hu.bme.mit.iet;
+package hu.bme.mit.iet.pipe_game;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PumpTest {
+class PumpTest {
 
     private Pump pump;
     private SystemPart mockneighbour;
@@ -27,8 +26,8 @@ public class PumpTest {
     @Test
     void testAcceptNewFlow() {
         //megjegyzes: accept new flow hibat dob, amennyiben a from erteke null
-        assertEquals(false, pump.AcceptNewFlow(mockPipe1, mockPipe1));//nem lehet ugyabbol ugyanabba vezetni vizet
-        assertEquals(true,pump.AcceptNewFlow(mockPipe2, mockPipe1));//2 kulonbozobe viszont igen
+        assertEquals(false, pump.acceptNewFlow(mockPipe1, mockPipe1));//nem lehet ugyabbol ugyanabba vezetni vizet
+        assertEquals(true,pump.acceptNewFlow(mockPipe2, mockPipe1));//2 kulonbozobe viszont igen
     }
 
     @Test
@@ -38,9 +37,9 @@ public class PumpTest {
     
     @Test
     void testPullWater() {//megjegyzes: PullWater mukodese elter a kommentbe irttol: MINDIG 0-val ter vissza!
-        pump.BreakPump();//pumpa eltorve
-        assertEquals(0,pump.PullWater());//ekkor a beszivott 0
-        pump.Repair();
+        pump.breakPump();//pumpa eltorve
+        assertEquals(0,pump.pullWater());//ekkor a beszivott 0
+        pump.repair();
         
         /* megjegyzes: acceptNewFLow hibat dob, ha a from null, mivel meghivja a nullra az equals fgv-t
          * 
@@ -48,9 +47,9 @@ public class PumpTest {
             assertEquals(0,pump.PullWater());
          */
 
-        pump.AcceptNewFlow(mockPipe2, mockPipe1);
+        pump.acceptNewFlow(mockPipe2, mockPipe1);
         when(mockPipe2.isBroken()).thenReturn(false);//from is not broken
-        pump.PullWater();
+        pump.pullWater();
         verify(mockPipe2,times(1)).getWater();//ha minden rendben el kell kernie a vizt a csobol
 
 
@@ -59,9 +58,9 @@ public class PumpTest {
 
     @Test
     void testPushWater() {
-        pump.BreakPump();//pumpa eltorve
-        assertEquals(0,pump.PushWater());//ekkor a lyukasson kifolyt 0
-        pump.Repair();
+        pump.breakPump();//pumpa eltorve
+        assertEquals(0,pump.pushWater());//ekkor a lyukasson kifolyt 0
+        pump.repair();
         
         /* megjegyzes: acceptNewFLow hibat dob, ha a from null, mivel meghivja a nullra az equals fgv-t
          * 
@@ -69,9 +68,9 @@ public class PumpTest {
             assertEquals(0,pump.PullWater());
          */
 
-        pump.AcceptNewFlow(mockPipe2, mockPipe1);
+        pump.acceptNewFlow(mockPipe2, mockPipe1);
         when(mockPipe1.isBroken()).thenReturn(false);//to is not broken
-        pump.PushWater();
+        pump.pushWater();
         verify(mockPipe1,times(1)).setWater(anyInt());//ha minden rendben el kell kernie a vizt a csobol
     }
 

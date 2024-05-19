@@ -1,24 +1,12 @@
-package hu.bme.mit.iet;
+package hu.bme.mit.iet.pipe_game;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
 import static org.mockito.Mockito.*;
 
-import org.mockito.internal.invocation.InvocationComparator;
-import org.mockito.internal.matchers.Any;
-
-import net.bytebuddy.utility.RandomString;
-
-import static org.mockito.AdditionalMatchers.and;
-
-import java.util.List;
-
-public class MechanicTest {
+class MechanicTest {
 
     private Mechanic mechanic;
     private Cistern mockCistern;
@@ -37,51 +25,51 @@ public class MechanicTest {
 
     @Test
     void testCarryPipeEndSuccessfull() {
-        when(mockSystemPart.CarryPipeEnd(mockPipe)).thenReturn(true);
-        mechanic.CarryPipeEnd(mockPipe);
+        when(mockSystemPart.carryPipeEnd(mockPipe)).thenReturn(true);
+        mechanic.carryPipeEnd(mockPipe);
         assertNotEquals("nothing", mechanic.getPart());
     }
 
     @Test
     void testCarryPipeEndUnsuccessfull() {
         mechanic.position=mockSystemPart;
-        when(mockSystemPart.CarryPipeEnd(mockPipe)).thenReturn(false);
-        mechanic.CarryPipeEnd(mockPipe);
+        when(mockSystemPart.carryPipeEnd(mockPipe)).thenReturn(false);
+        mechanic.carryPipeEnd(mockPipe);
         assertEquals("nothing", mechanic.getPart());
     }
 
     @Test
     void testCarryPump() {
-        when(mockSystemPart.CarryPump()).thenReturn(mockPump);
+        when(mockSystemPart.carryPump()).thenReturn(mockPump);
         mockPump.id="10";
-        mechanic.CarryPump();
+        mechanic.carryPump();
         assertEquals("10",mechanic.getPart());
     }
 
     @Test
     void testLayPipe() {
-        assertEquals(false,mechanic.LayPipe());//ha nincs a kezeben semmi 
-        when(mockSystemPart.CarryPipeEnd(any(SystemPart.class))).thenReturn(true);//ha van a kezeben pipe
-        when(mockSystemPart.LayPipe(any(SystemPart.class))).thenReturn(true);//ha a hely ahol all engedi a lerekast
-        mechanic.CarryPipeEnd(mockPipe);
-        assertEquals(true,mechanic.LayPipe());
+        assertEquals(false,mechanic.layPipe());//ha nincs a kezeben semmi 
+        when(mockSystemPart.carryPipeEnd(any(SystemPart.class))).thenReturn(true);//ha van a kezeben pipe
+        when(mockSystemPart.layPipe(any(SystemPart.class))).thenReturn(true);//ha a hely ahol all engedi a lerekast
+        mechanic.carryPipeEnd(mockPipe);
+        assertEquals(true,mechanic.layPipe());
     }
 
     @Test
     void testLayPump() {
         mechanic.position=mockCistern;
-        assertEquals(null,mechanic.LayPump());//ha nincs a kezeben semmi 
-        when(mockCistern.CarryPump()).thenReturn(mockPump);//ha van a kezeben pump
-        when(mockCistern.LayPipe(any(SystemPart.class))).thenReturn(true);//ha a hely ahol all engedi a lerekast
-        mechanic.CarryPump();
-        assertEquals(mockPump,mechanic.LayPump());
+        assertEquals(null,mechanic.layPump());//ha nincs a kezeben semmi 
+        when(mockCistern.carryPump()).thenReturn(mockPump);//ha van a kezeben pump
+        when(mockCistern.layPipe(any(SystemPart.class))).thenReturn(true);//ha a hely ahol all engedi a lerekast
+        mechanic.carryPump();
+        assertEquals(mockPump,mechanic.layPump());
     }
 
     @Test
     void testRepair() {
         mechanic.position=mockPump;
-        mechanic.Repair();
-        verify(mockPump,times(1)).Repair();
+        mechanic.repair();
+        verify(mockPump,times(1)).repair();
     }
 
     @Test
@@ -90,8 +78,8 @@ public class MechanicTest {
         String stringID="100";
         mockPipe.id=stringID;
         mechanic.position=mockCistern;//cisternan all
-        when(mockCistern.CarryPipeEnd(mockPipe)).thenReturn(true);//cistern engedi, hogy felvegyek
-        mechanic.CarryPipeEnd(mockPipe);//igy ez a pipe lesz a carried part
+        when(mockCistern.carryPipeEnd(mockPipe)).thenReturn(true);//cistern engedi, hogy felvegyek
+        mechanic.carryPipeEnd(mockPipe);//igy ez a pipe lesz a carried part
         assertEquals(stringID, mechanic.getPart());//valoban a 100-as id-ú pipe legyen a mechanicnal
 
     }

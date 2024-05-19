@@ -1,20 +1,7 @@
-package hu.bme.mit.iet;
+package hu.bme.mit.iet.pipe_game;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.*;
-
-import org.mockito.internal.invocation.InvocationComparator;
-import org.mockito.internal.matchers.Any;
-
-import static org.mockito.AdditionalMatchers.and;
-
-import java.util.List;
 
 class CisternTest {
 	private Cistern cistern; //Ciszterna letrehozasa
@@ -25,23 +12,23 @@ class CisternTest {
 	}
 	@Test
 	void testCreatePump() {
-		cistern.CreatePump();
+		cistern.createPump();
 		assertEquals(true, cistern.hasPump());
 	}
 	
 	@Test
 	void testCarryPump() {
-		cistern.CreatePump();
-		assertInstanceOf(Pump.class,cistern.CarryPump());
+		cistern.createPump();
+		assertInstanceOf(Pump.class,cistern.carryPump());
 	}
 	@Test
 	void testPullWaterEmpty() {
 		//üressel
-		assertEquals(0,cistern.PullWater());
+		assertEquals(0,cistern.pullWater());
 	}
 	void testPullWater() {
 		//TODO osszetett, mert eloszor csinalni kell meg csovet, amelybe vizet kell tenni
-		assertEquals(0,cistern.PullWater());
+		assertEquals(0,cistern.pullWater());
 	}
 
 	@Test
@@ -56,7 +43,7 @@ class CisternTest {
 	@Test
 	void testCreatePipe() {
 		assertEquals(false,cistern.hasP());//mielott a create pipe meg van hivva ne legyen cso
-		cistern.CreatePipe();
+		cistern.createPipe();
 		assertEquals(true,cistern.hasP());
 	}
 
@@ -69,16 +56,16 @@ class CisternTest {
 	@Test
 	void testHasPump() {
 		assertEquals(false,cistern.hasPump());
-		cistern.CreatePump();
+		cistern.createPump();
 		assertEquals(true,cistern.hasPump());
-		cistern.CarryPump();
+		cistern.carryPump();
 		assertEquals(false,cistern.hasPump());
 	}
 
 	@Test
 	void testGetPipe() {
 		assertEquals(null,cistern.getPipe());
-		cistern.CreatePipe();
+		cistern.createPipe();
 		assertInstanceOf(Pipe.class,cistern.getPipe() );
 		assertNotEquals(null,cistern.getPipe());
 	}
@@ -86,15 +73,15 @@ class CisternTest {
 	@Test
 	void testHasP() {
 		assertEquals(false,cistern.hasP());
-		cistern.CreatePipe();
+		cistern.createPipe();
 		assertEquals(true,cistern.hasP());
 	}
 
 	@Test
 	void testGetpCount() {
 		assertEquals(0,cistern.getpCount());
-		cistern.CreatePipe();
-		cistern.CreatePipe();
+		cistern.createPipe();
+		cistern.createPipe();
 		assertEquals(2,cistern.getpCount());
 	}
 

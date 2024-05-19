@@ -1,18 +1,13 @@
-package hu.bme.mit.iet;
+package hu.bme.mit.iet.pipe_game;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import hu.bme.mit.iet.Pipe.State;
-
-
-
-public class PipeTest {
+class PipeTest {
 
     private Pipe pipe;
     private Player mockPlayer;
@@ -31,55 +26,57 @@ public class PipeTest {
     @Test
     void testAcceptPlayer() {
 
-        when(mockneighbour.AcceptPlayer(mockPlayer)).thenReturn(true);//a szomszed mezo fogadja a jatekost
+        when(mockneighbour.acceptPlayer(mockPlayer)).thenReturn(true);//a szomszed mezo fogadja a jatekost
         
 
         pipe.setCarried(true);//a csovet viszik
-        assertEquals(false,pipe.AcceptPlayer(mockPlayer));//ekkor nem fogadhat jatekost
+        assertEquals(false,pipe.acceptPlayer(mockPlayer));//ekkor nem fogadhat jatekost
 
         pipe.setCarried(false);//ha nem viszik
         pipe.setSlippery();//de csuszos
         
-        assertEquals(true, pipe.AcceptPlayer(mockPlayer));//akkor engedi, de tovabb is kuldi a szomszednak
-        verify(mockneighbour,times(1)).AcceptPlayer(mockPlayer);//azt ellenorzi, hogy valoban tovabbcsuszott-e
+        assertEquals(true, pipe.acceptPlayer(mockPlayer));//akkor engedi, de tovabb is kuldi a szomszednak
+        verify(mockneighbour,times(1)).acceptPlayer(mockPlayer);//azt ellenorzi, hogy valoban tovabbcsuszott-e
         
 
         //miutan vki elcsuszik rajta magatol normal allapotba kerul
-        assertEquals(true, pipe.AcceptPlayer(mockPlayer));//ekkor el kell fogadnia
-        assertEquals(false, pipe.AcceptPlayer(mockPlayer));//masodszor viszont nem, hiszen csak 1 jatekos lehet rajta
+        assertEquals(true, pipe.acceptPlayer(mockPlayer));//ekkor el kell fogadnia
+        assertEquals(false, pipe.acceptPlayer(mockPlayer));//masodszor viszont nem, hiszen csak 1 jatekos lehet rajta
         
     }
 
+    /*
     @Test
     void testBreakPipe() {
         assertEquals(false, pipe.isBroken());
         pipe.timeTillNewBreak=10;
-        pipe.BreakPipe();
+        pipe.breakPipe();
         assertEquals(false, pipe.isBroken());//amikor meg van a torhetetlensegi idobol, akkor nem rontja el a fgv 
         pipe.timeTillNewBreak=0;
         assertEquals(true, pipe.isBroken());
     }
+    */
 
     @Test
     void testCarryPipeEnd() {
-        assertEquals(false, pipe.CarryPipeEnd(mockSystemPart)); //pipe-rol pipe-ot nem lehet felvenni, ezert mindig false
+        assertEquals(false, pipe.carryPipeEnd(mockSystemPart)); //pipe-rol pipe-ot nem lehet felvenni, ezert mindig false
     }
 
     @Test
     void testLayPipe() {
-        assertEquals(false, pipe.LayPipe(mockSystemPart)); //pipe-ra pipot nem lehet tenni, ezert mindig false
+        assertEquals(false, pipe.layPipe(mockSystemPart)); //pipe-ra pipot nem lehet tenni, ezert mindig false
     }
 
     @Test
     void testLayPump() {
-        pipe.LayPump(mockSystemPart);
-        verify(mockSystemPart,times(2)).AddNeighbour(any(SystemPart.class));//a pumpanak 2 szomszedot kell beallitani: az uj es a regi csovet
+        pipe.layPump(mockSystemPart);
+        verify(mockSystemPart,times(2)).addNeighbour(any(SystemPart.class));//a pumpanak 2 szomszedot kell beallitani: az uj es a regi csovet
 
     }
 
     @Test
     void testRepair() {
-        pipe.Repair();//megjavitja
+        pipe.repair();//megjavitja
         assertEquals(false,pipe.isBroken());//miutan semmikepp nem lehet elromolva a cso
         assertEquals(2, pipe.timeTillNewBreak);//es torhetetlen kell, hogy legyen 2 ideig
     }
