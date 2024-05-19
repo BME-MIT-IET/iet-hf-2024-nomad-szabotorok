@@ -1,3 +1,5 @@
+package hu.bme.mit.iet.pipe_game;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,7 +25,7 @@ public class GUIControl extends JFrame{
         this.setTitle("Sivatagi Vízhálózat");
         this.setResizable(false);
 
-        JPanel menu = new JPanel();
+        final JPanel menu = new JPanel();
 
         menu.setLayout(null);
         menu.setPreferredSize(new Dimension(500,500));
@@ -77,7 +79,7 @@ public class GUIControl extends JFrame{
     public void Settings(JPanel oldMenu) {
         this.remove(oldMenu);
 
-        JPanel menu = new JPanel();
+        final JPanel menu = new JPanel();
         menu.setLayout(null);
         menu.setPreferredSize(new Dimension(500, 500));
 
@@ -90,21 +92,21 @@ public class GUIControl extends JFrame{
         kor.setFont(new Font("Arial", Font.BOLD, 30));
 
         Integer[] szamok =  new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20};
-        JComboBox<Integer> roundNum = new JComboBox<>(szamok);
+        final JComboBox<Integer> roundNum = new JComboBox<>(szamok);
         roundNum.setBounds(650, 240, 50, 20);
 
         JLabel saboteur = new JLabel("Hány szabotőr legyen?", SwingConstants.LEFT);
         saboteur.setBounds(150, 300, 500, 100);
         saboteur.setFont(new Font("Arial", Font.BOLD, 30));
 
-        JComboBox<Integer> saboteurCount = new JComboBox<>(new Integer[]{2, 3, 4});
+        final JComboBox<Integer> saboteurCount = new JComboBox<>(new Integer[]{2, 3, 4});
         saboteurCount.setBounds(650, 340, 50, 20);
 
         JLabel mechanic = new JLabel("Hány szerelő legyen?", SwingConstants.LEFT);
         mechanic.setBounds(150, 400, 500, 100);
         mechanic.setFont(new Font("Arial", Font.BOLD, 30));
 
-        JComboBox<Integer> mechanicCount = new JComboBox<>(new Integer[]{2, 3, 4});
+        final JComboBox<Integer> mechanicCount = new JComboBox<>(new Integer[]{2, 3, 4});
         mechanicCount.setBounds(650, 440, 50, 20);
 
         JButton start = new JButton("Játék indítása");

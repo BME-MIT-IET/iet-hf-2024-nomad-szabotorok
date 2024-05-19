@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "bme-mit-iet-org",
+        "projectKey": "BME-MIT-IET_iet-hf-2024-nomad-szabotorok"
+    }
+}

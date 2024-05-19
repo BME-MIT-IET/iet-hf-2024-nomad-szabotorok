@@ -1,3 +1,5 @@
+package hu.bme.mit.iet.pipe_game;
+
 /**
  * A forrás, ahonnan folyamatosan jön a víz. Ezt továbbítja a szomszédos csövekent.
  */

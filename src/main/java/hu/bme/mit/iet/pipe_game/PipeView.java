@@ -1,3 +1,5 @@
+package hu.bme.mit.iet.pipe_game;
+
 import javax.sound.sampled.Line;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
