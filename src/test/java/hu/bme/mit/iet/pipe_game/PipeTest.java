@@ -45,19 +45,7 @@ class PipeTest {
         
     }
 
-    /*
-    @Test
-    void testBreakPipe() {
-        assertEquals(false, pipe.isBroken());
-        pipe.timeTillNewBreak=10;
-        pipe.breakPipe();
-        assertEquals(false, pipe.isBroken());//amikor meg van a torhetetlensegi idobol, akkor nem rontja el a fgv 
-        pipe.Repair();
-        pipe.timeTillNewBreak=0;
-        pipe.BreakPipe();
-        assertEquals(true, pipe.isBroken());
-    }
-    */
+
 
     @Test
     void testCarryPipeEnd() {
@@ -94,52 +82,5 @@ class PipeTest {
         assertEquals(0, pipe.timeTillNewBreak);
     }
 
-    @Test
-    void testGetCapacity() {
-        
-    }
 
-    @Test
-    void testGetWater() {
-    }
-
-    @Test
-    void testIsBroken() {
-
-    }
-
-    @Test
-    void testIsGlued() {
-
-    }
-
-    @Test
-    void testIsSlippery() {
-
-    }
-
-    @Test
-    void testSetCarried() {
-
-    }
-
-    @Test
-    void testSetGlued() {
-
-    }
-
-    @Test
-    void testSetNormal() {
-
-    }
-
-    @Test
-    void testSetSlippery() {
-
-    }
-
-    @Test
-    void testSetWater() {
-
-    }
 }

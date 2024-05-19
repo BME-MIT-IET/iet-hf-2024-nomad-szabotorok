@@ -74,23 +74,5 @@ class PumpTest {
         verify(mockPipe1,times(1)).setWater(anyInt());//ha minden rendben el kell kernie a vizt a csobol
     }
 
-    @Test
-    void testRepair() {//egyszeru setter
 
-    }
-
-    @Test
-    void testGetFrom() {//egyszeru getter
-
-    }
-
-    @Test
-    void testGetTo() {//egyszeru getter
-    
-    }
-
-    @Test
-    void testIsBroken() {//egyszeru getter
-
-    }
 }
