@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 public class PumpTest {
 
     private Pump pump;
-    private Player mockPlayer;
-    private SystemPart mockSystemPart;
     private SystemPart mockneighbour;
     private Pipe mockPipe1;
     private Pipe mockPipe2;
@@ -19,8 +17,6 @@ public class PumpTest {
     @BeforeEach
     void initiate(){
          pump=new Pump();
-         mockPlayer=mock(Player.class);
-         mockSystemPart=mock(SystemPart.class);
          mockneighbour=mock(SystemPart.class);
          mockPipe1=mock(Pipe.class);
          mockPipe2=mock(Pipe.class);
