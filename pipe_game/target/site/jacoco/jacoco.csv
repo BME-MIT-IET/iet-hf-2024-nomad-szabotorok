@@ -1,0 +1,23 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+pipe_game,hu.bme.mit.iet,Pump,34,146,10,12,11,40,11,11,3,8
+pipe_game,hu.bme.mit.iet,Pipe.State,0,34,0,0,0,1,0,1,0,1
+pipe_game,hu.bme.mit.iet,View.new ActionListener() {...},15,0,0,0,3,0,2,0,2,0
+pipe_game,hu.bme.mit.iet,PipeView,637,0,32,0,61,0,20,0,4,0
+pipe_game,hu.bme.mit.iet,WaterSourceView,161,0,6,0,26,0,7,0,4,0
+pipe_game,hu.bme.mit.iet,PumpView,178,0,8,0,29,0,8,0,4,0
+pipe_game,hu.bme.mit.iet,WaterSource,0,43,0,4,0,11,0,5,0,3
+pipe_game,hu.bme.mit.iet,CisternView,211,0,8,0,33,0,8,0,4,0
+pipe_game,hu.bme.mit.iet,SystemPart,88,25,6,0,37,7,26,3,23,3
+pipe_game,hu.bme.mit.iet,GUIControl.new ActionListener() {...},16,0,0,0,3,0,2,0,2,0
+pipe_game,hu.bme.mit.iet,GUIControl.new ActionListener() {...},15,0,0,0,3,0,2,0,2,0
+pipe_game,hu.bme.mit.iet,Main,10,0,0,0,4,0,2,0,2,0
+pipe_game,hu.bme.mit.iet,GUIControl.new ActionListener() {...},51,0,0,0,7,0,2,0,2,0
+pipe_game,hu.bme.mit.iet,GUIControl,1030,0,36,0,164,0,26,0,8,0
+pipe_game,hu.bme.mit.iet,Saboteur,0,18,0,0,0,6,0,3,0,3
+pipe_game,hu.bme.mit.iet,Cistern,40,112,5,5,11,35,4,12,1,10
+pipe_game,hu.bme.mit.iet,View,397,0,16,0,108,0,27,0,14,0
+pipe_game,hu.bme.mit.iet,ViewBase,108,0,12,0,26,0,12,0,6,0
+pipe_game,hu.bme.mit.iet,Mechanic,2,99,2,10,1,30,2,13,0,9
+pipe_game,hu.bme.mit.iet,Player,76,11,6,0,31,4,22,2,19,2
+pipe_game,hu.bme.mit.iet,Control,808,24,92,0,190,10,69,5,18,5
+pipe_game,hu.bme.mit.iet,Pipe,66,158,5,11,13,50,10,18,7,13

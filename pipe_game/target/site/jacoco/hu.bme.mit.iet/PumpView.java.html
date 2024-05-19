@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PumpView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pipe_game</a> &gt; <a href="index.source.html" class="el_package">hu.bme.mit.iet</a> &gt; <span class="el_source">PumpView.java</span></div><h1>PumpView.java</h1><pre class="source lang-java linenums">package hu.bme.mit.iet;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+public class PumpView extends ViewBase{
+    private Pump pump;
+    private JButton button;
+    private ArrayList&lt;JLabel&gt; players;
+
+    /**
+     * Konstruktor, ami létrehozza az osztály grafikus megjelenéséhez szükséges swing elemeket
+     * @param view
+     * @param pump
+     */
+    public PumpView(View view, Pump pump){
+<span class="nc" id="L18">        super(view);</span>
+<span class="nc" id="L19">        this.pump = pump;</span>
+<span class="nc" id="L20">        button = new JButton();</span>
+<span class="nc" id="L21">        button.addActionListener(this);</span>
+<span class="nc" id="L22">        players = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L23">    }</span>
+
+    /**
+     * grafikusan frissíti az adott példányt a jelenlegi állapotnak megfelelően
+     * játékosok újrahelyezése
+     */
+    @Override
+    public void Update() {
+<span class="nc" id="L31">        button.setBounds(x,y,50,50);</span>
+<span class="nc" id="L32">        button.setBackground(new Color(89, 158, 227,255));</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (pump.isBroken()) {</span>
+<span class="nc" id="L34">            button.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 3));</span>
+<span class="nc" id="L35">        }</span>
+        else {
+<span class="nc" id="L37">            button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));</span>
+        }
+
+        /**
+         * Eloszor levesszuk az elozo dolgokat
+         */
+<span class="nc" id="L43">        view.getPanel().remove(button);</span>
+
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        while (players.size() &gt; 0){</span>
+<span class="nc" id="L46">            view.getPanel().remove(players.get(0));</span>
+<span class="nc" id="L47">            players.remove(0);</span>
+        }
+        /**
+         * Majd feltesszuk oket a pane-re
+         */
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        for (int i = 0; i &lt; pump.players.size(); ++i){</span>
+<span class="nc" id="L53">            JLabel player = new JLabel(pump.players.get(i).getId());</span>
+<span class="nc" id="L54">            player.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 10));</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">            if (i &lt; 3)</span>
+<span class="nc" id="L56">                player.setBounds(x+1+i*16, y, 16, 16);</span>
+            else
+<span class="nc" id="L58">                player.setBounds(x+1+(i-3)*16, y+32, 16, 16);</span>
+<span class="nc" id="L59">            players.add(player);</span>
+<span class="nc" id="L60">            view.getPanel().add(player, Integer.valueOf(2));</span>
+        }
+
+<span class="nc" id="L63">        view.getPanel().add(button, Integer.valueOf(1));</span>
+<span class="nc" id="L64">    }</span>
+
+    /**
+     * getter függvény
+     * @return
+     */
+    public String getID(){
+<span class="nc" id="L71">        return pump.getId();</span>
+    }
+
+    /**
+     * ActionListener interface megvalósítása
+     * @param e the event to be processed
+     */
+    public void actionPerformed(ActionEvent e){
+<span class="nc" id="L79">        action(pump.getId());</span>
+<span class="nc" id="L80">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

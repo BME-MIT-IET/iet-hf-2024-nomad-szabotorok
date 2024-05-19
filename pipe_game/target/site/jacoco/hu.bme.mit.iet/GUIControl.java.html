@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GUIControl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pipe_game</a> &gt; <a href="index.source.html" class="el_package">hu.bme.mit.iet</a> &gt; <span class="el_source">GUIControl.java</span></div><h1>GUIControl.java</h1><pre class="source lang-java linenums">package hu.bme.mit.iet;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.geom.Line2D;
+import java.beans.PropertyChangeListener;
+import java.nio.channels.Pipe;
+import java.util.ArrayList;
+
+<span class="nc" id="L12">public class GUIControl extends JFrame{</span>
+    private Control gameControl;
+    private View gameField;
+    private  int rounds, mechCount, sabCount;
+
+    /**
+     * a menu létrehozása exit és start gombokkal
+     * a gombok műkődésének beállítása
+     */
+    public void Run(){
+<span class="nc" id="L22">        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L23">        this.setSize(1000, 855);</span>
+<span class="nc" id="L24">        this.setTitle(&quot;Sivatagi Vízhálózat&quot;);</span>
+<span class="nc" id="L25">        this.setResizable(false);</span>
+
+<span class="nc" id="L27">        final JPanel  menu = new JPanel();</span>
+
+<span class="nc" id="L29">        menu.setLayout(null);</span>
+<span class="nc" id="L30">        menu.setPreferredSize(new Dimension(500,500));</span>
+
+<span class="nc" id="L32">        JButton start = new JButton(&quot;Játék indítása&quot;);</span>
+<span class="nc" id="L33">        start.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 32));</span>
+<span class="nc" id="L34">        start.setBounds((1000-300)/2, 250, 300, 100);</span>
+
+<span class="nc" id="L36">        JButton exit = new JButton(&quot;Kilépés&quot;);</span>
+<span class="nc" id="L37">        exit.setBounds((1000-300)/2, 400, 300, 100);</span>
+<span class="nc" id="L38">        exit.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 32));</span>
+
+<span class="nc" id="L40">        JLabel title = new JLabel(&quot;Sivatagi Vízhálózat&quot;, SwingConstants.CENTER);</span>
+<span class="nc" id="L41">        title.setBounds(0, 50, 1000, 150);</span>
+<span class="nc" id="L42">        title.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 60));</span>
+
+<span class="nc" id="L44">        menu.add(title);</span>
+<span class="nc" id="L45">        menu.add(start);</span>
+<span class="nc" id="L46">        menu.add(exit);</span>
+
+<span class="nc" id="L48">        this.add(menu);</span>
+<span class="nc" id="L49">        this.setVisible(true);</span>
+
+        /**
+         * ActionListener-ek a gombokhoz
+         * kilepes es start
+         */
+<span class="nc" id="L55">        exit.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L58">                dispatchEvent(new WindowEvent(GUIControl.this, WindowEvent.WINDOW_CLOSING));</span>
+<span class="nc" id="L59">            }</span>
+        });
+
+<span class="nc" id="L62">        start.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L65">                Settings(menu);</span>
+<span class="nc" id="L66">            }</span>
+        });
+
+<span class="nc" id="L69">    }</span>
+
+    /**
+     * beállítások menu
+     * beállítási opciókat JLabeleken kiírva létrehozza
+     * létrehoz JComboBoxokat a kiválasztható értékekkel
+     * a start gomb megnyomására a kiválasztott beállítások beállítása
+     * @param oldMenu
+     */
+    public void Settings(JPanel oldMenu) {
+<span class="nc" id="L79">        this.remove(oldMenu);</span>
+
+<span class="nc" id="L81">        final JPanel menu = new JPanel();</span>
+<span class="nc" id="L82">        menu.setLayout(null);</span>
+<span class="nc" id="L83">        menu.setPreferredSize(new Dimension(500, 500));</span>
+
+<span class="nc" id="L85">        JLabel title = new JLabel(&quot;Beállítások&quot;, SwingConstants.CENTER);</span>
+<span class="nc" id="L86">        title.setBounds(0, 20, 1000, 150);</span>
+<span class="nc" id="L87">        title.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 60));</span>
+
+<span class="nc" id="L89">        JLabel kor = new JLabel(&quot;Hány kör legyen?&quot;, SwingConstants.LEFT);</span>
+<span class="nc" id="L90">        kor.setBounds(150, 200, 500, 100);</span>
+<span class="nc" id="L91">        kor.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 30));</span>
+
+<span class="nc" id="L93">        Integer[] szamok =  new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20};</span>
+<span class="nc" id="L94">        final JComboBox&lt;Integer&gt; roundNum = new JComboBox&lt;&gt;(szamok);</span>
+<span class="nc" id="L95">        roundNum.setBounds(650, 240, 50, 20);</span>
+
+<span class="nc" id="L97">        JLabel saboteur = new JLabel(&quot;Hány szabotőr legyen?&quot;, SwingConstants.LEFT);</span>
+<span class="nc" id="L98">        saboteur.setBounds(150, 300, 500, 100);</span>
+<span class="nc" id="L99">        saboteur.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 30));</span>
+
+<span class="nc" id="L101">        final JComboBox&lt;Integer&gt; saboteurCount = new JComboBox&lt;&gt;(new Integer[]{2, 3, 4});</span>
+<span class="nc" id="L102">        saboteurCount.setBounds(650, 340, 50, 20);</span>
+
+<span class="nc" id="L104">        JLabel mechanic = new JLabel(&quot;Hány szerelő legyen?&quot;, SwingConstants.LEFT);</span>
+<span class="nc" id="L105">        mechanic.setBounds(150, 400, 500, 100);</span>
+<span class="nc" id="L106">        mechanic.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 30));</span>
+
+<span class="nc" id="L108">        final JComboBox&lt;Integer&gt; mechanicCount = new JComboBox&lt;&gt;(new Integer[]{2, 3, 4});</span>
+<span class="nc" id="L109">        mechanicCount.setBounds(650, 440, 50, 20);</span>
+
+<span class="nc" id="L111">        JButton start = new JButton(&quot;Játék indítása&quot;);</span>
+<span class="nc" id="L112">        start.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 32));</span>
+<span class="nc" id="L113">        start.setBounds((1000 - 300) / 2, 500, 300, 100);</span>
+
+<span class="nc" id="L115">        menu.add(title);</span>
+<span class="nc" id="L116">        menu.add(kor);</span>
+<span class="nc" id="L117">        menu.add(roundNum);</span>
+<span class="nc" id="L118">        menu.add(saboteur);</span>
+<span class="nc" id="L119">        menu.add(saboteurCount);</span>
+<span class="nc" id="L120">        menu.add(mechanic);</span>
+<span class="nc" id="L121">        menu.add(mechanicCount);</span>
+<span class="nc" id="L122">        menu.add(start);</span>
+
+        /**
+         * 3 comboboxhoz ActionListener
+         */
+<span class="nc" id="L127">        start.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L130">                rounds = (int)roundNum.getSelectedItem();</span>
+<span class="nc" id="L131">                sabCount = (int)saboteurCount.getSelectedItem();</span>
+<span class="nc" id="L132">                mechCount = (int)mechanicCount.getSelectedItem();</span>
+<span class="nc" id="L133">                remove(menu);</span>
+<span class="nc" id="L134">                StartGame();</span>
+<span class="nc" id="L135">            }</span>
+        });
+
+<span class="nc" id="L138">        this.add(menu);</span>
+<span class="nc" id="L139">        this.revalidate();</span>
+<span class="nc" id="L140">    }</span>
+
+    /**
+     * Játék indítása
+     * játékmező beállítása és kirajzolása
+     */
+    public void StartGame() {
+<span class="nc" id="L147">        gameField = new View(this);</span>
+<span class="nc" id="L148">        gameControl= new Control();</span>
+<span class="nc" id="L149">        gameControl.Init(rounds,mechCount,sabCount);</span>
+
+<span class="nc" id="L151">        ArrayList&lt;ViewBase&gt; things = new ArrayList&lt;ViewBase&gt;();</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        for (int i = 0; i &lt; gameControl.getPipes().size(); ++i){</span>
+<span class="nc" id="L154">            PipeView thing = new PipeView(gameField, gameControl.getPipes().get(i));</span>
+<span class="nc" id="L155">            things.add(thing);</span>
+        }
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        for (int i = 0; i &lt; gameControl.getPumps().size(); ++i){</span>
+<span class="nc" id="L158">            PumpView thing = new PumpView(gameField, gameControl.getPumps().get(i));</span>
+<span class="nc" id="L159">            things.add(thing);</span>
+        }
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        for (int i = 0; i &lt; gameControl.getCisterns().size(); ++i){</span>
+<span class="nc" id="L162">            CisternView thing = new CisternView(gameField, gameControl.getCisterns().get(i));</span>
+<span class="nc" id="L163">            things.add(thing);</span>
+        }
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        for (int i = 0; i &lt; gameControl.getWaterSources().size(); ++i){</span>
+<span class="nc" id="L166">            WaterSourceView thing = new WaterSourceView(gameField, gameControl.getWaterSources().get(i));</span>
+<span class="nc" id="L167">            things.add(thing);</span>
+        }
+
+        /**
+         * Beallitjuk a grafikus helyzetuket a dolgoknak
+         */
+        // Pipes
+<span class="nc" id="L174">        things.get(0).setCoords(325, 0);</span>
+<span class="nc" id="L175">        things.get(1).setCoords(425, 0);</span>
+<span class="nc" id="L176">        things.get(2).setCoords(375, 350);</span>
+<span class="nc" id="L177">        things.get(3).setCoords(325, 750);</span>
+<span class="nc" id="L178">        things.get(4).setCoords(425, 750);</span>
+        // Pumps
+<span class="nc" id="L180">        things.get(5).setCoords(50, 350);</span>
+<span class="nc" id="L181">        things.get(6).setCoords(700, 350);</span>
+        // Cisterns
+<span class="nc" id="L183">        things.get(7).setCoords(0, 750);</span>
+<span class="nc" id="L184">        things.get(8).setCoords(750, 750);</span>
+        // Watersources
+<span class="nc" id="L186">        things.get(9).setCoords(0, 0);</span>
+<span class="nc" id="L187">        things.get(10).setCoords(750, 0);</span>
+
+<span class="nc" id="L189">        gameField.setFields(things);</span>
+<span class="nc" id="L190">        gameField.UpdateAll();</span>
+<span class="nc" id="L191">    }</span>
+
+    /**
+     * Egy commandot vegrehajt, azaz atad a modellnek, h vegrehajtsa az akciot.
+     * Ha letettunk egy pumpat, akkor azt felveszi a jatekterbe
+     * @param commands
+     */
+    public void commitCommand(ArrayList&lt;String&gt; commands) {
+<span class="nc" id="L199">        int ertek = gameControl.PlayerAction(commands);</span>
+
+        /**
+         * ha ertek &lt;0 ,akkor nem volt pumpaletetel
+         * ha ertek &gt;= 0, akkro volt, es ertek a pumps-ban az idnexet adja vissza
+         */
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        if ( ertek&gt;= 0) {</span>
+<span class="nc" id="L206">            Pump pump = gameControl.getPumps().get(ertek);</span>
+<span class="nc" id="L207">            PumpView pumpView = new PumpView(gameField, pump);</span>
+<span class="nc" id="L208">            PipeView pipeView = new PipeView(gameField, gameControl.getPipes().get(gameControl.getPipes().size() - 1));</span>
+
+<span class="nc" id="L210">            ViewBase posPipe = null;</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">            for (int i = 0; i &lt; gameField.getFields().size(); ++i) {</span>
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                if (gameControl.getLastPlayer().getPosition().getId().equals(gameField.getFields().get(i).getID())) {</span>
+<span class="nc" id="L214">                    posPipe = gameField.getFields().get(i);</span>
+<span class="nc" id="L215">                    break;</span>
+                }
+            }
+
+<span class="nc" id="L219">            int n1X = 0;</span>
+<span class="nc" id="L220">            int n1Y = 0;</span>
+<span class="nc" id="L221">            int n2X = 0;</span>
+<span class="nc" id="L222">            int n2Y = 0;</span>
+
+<span class="nc" id="L224">            SystemPart posp = pump.getNeighbours().get(0);</span>
+<span class="nc" id="L225">            SystemPart newp = pump.getNeighbours().get(1);</span>
+
+<span class="nc" id="L227">            String n1 = posp.getNeighbours().get(0).getId();</span>
+<span class="nc" id="L228">            String n2 = newp.getNeighbours().get(1).getId();</span>
+
+<span class="nc" id="L230">            ArrayList&lt;ViewBase&gt; fields = gameField.getFields();</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            for (ViewBase f : fields) {</span>
+<span class="nc" id="L232">                String id = f.getID();</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">                if (id.equals(n1)) {</span>
+<span class="nc" id="L234">                    n1X = f.getX();</span>
+<span class="nc" id="L235">                    n1Y = f.getY();</span>
+                }
+<span class="nc bnc" id="L237" title="All 2 branches missed.">                if (id.equals(n2)) {</span>
+<span class="nc" id="L238">                    n2X = f.getX();</span>
+<span class="nc" id="L239">                    n2Y = f.getY();</span>
+                }
+            }
+
+<span class="nc" id="L243">            pumpView.setCoords(posPipe.x, posPipe.y);</span>
+<span class="nc" id="L244">            pipeView.setCoords((n2X + posPipe.x) / 2, (n2Y + posPipe.y) / 2);</span>
+<span class="nc" id="L245">            posPipe.setCoords((n1X + posPipe.x) / 2, (n1Y + posPipe.y) / 2);</span>
+
+<span class="nc" id="L247">            fields.add(pumpView);</span>
+<span class="nc" id="L248">            fields.add(pipeView);</span>
+        }
+
+<span class="nc" id="L251">        ArrayList&lt;Cistern&gt; cisterns = gameControl.getCisterns();</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">        for (int i = 0; i &lt; cisterns.size(); ++i){</span>
+
+<span class="nc bnc" id="L254" title="All 4 branches missed.">            if ( !cisterns.get(i).hasPump() &amp;&amp; cisterns.get(i).hasP() ==true) {</span>
+<span class="nc" id="L255">                ArrayList&lt;ViewBase&gt; fields = gameField.getFields();</span>
+<span class="nc" id="L256">                PipeView pw = new PipeView(gameField, cisterns.get(i).getPipe());</span>
+<span class="nc" id="L257">                int x = 0;</span>
+<span class="nc" id="L258">                int y = 0;</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">                for (int j = 0; j &lt; fields.size(); ++j) {</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">                    if (fields.get(j).getID().equals(cisterns.get(i).getId())){</span>
+<span class="nc" id="L261">                        x = fields.get(j).getX();</span>
+<span class="nc" id="L262">                        y = fields.get(j).getY();</span>
+                    }
+
+                }
+<span class="nc" id="L266">                pw.setCoords(x, y-100*cisterns.get(i).getpCount());</span>
+<span class="nc" id="L267">                fields.add(pw);</span>
+<span class="nc" id="L268">                System.out.println(&quot;generalodott&quot;);</span>
+            }
+        }
+        /**
+         * Vege van e a jateknak
+         */
+<span class="nc" id="L274">        CheckState();</span>
+<span class="nc" id="L275">    }</span>
+
+    /**
+     * Ellenorizzuk, hogy vege van e a jateknak
+     */
+    public void CheckState() {
+<span class="nc bnc" id="L281" title="All 2 branches missed.">        if(gameControl.GameOver()) {</span>
+<span class="nc" id="L282">            int mech = gameControl.getMechanicPoints();</span>
+<span class="nc" id="L283">            int sab = Control.getSaboteurPoints();</span>
+<span class="nc" id="L284">            String end = &quot;Vége a Játéknak!\nSzerelők pontjai: &quot; + mech +</span>
+<span class="nc" id="L285">                    &quot;\nSzabotőrök pontjai: &quot;+ sab;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            if (mech&gt;sab)</span>
+<span class="nc" id="L287">                end += &quot;\nA szerelők nyertek!&quot;;</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">            else if (mech&lt;sab)</span>
+<span class="nc" id="L289">                end += &quot;\nA szabotőrök nyertek!&quot;;</span>
+            else
+<span class="nc" id="L291">                end += &quot;\nDöntetlen&quot;;</span>
+
+<span class="nc" id="L293">            this.remove(gameField);</span>
+
+<span class="nc" id="L295">            JPanel panel = new JPanel();</span>
+<span class="nc" id="L296">            panel.setLayout(null);</span>
+<span class="nc" id="L297">            JTextArea textArea = new JTextArea(end);</span>
+<span class="nc" id="L298">            textArea.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 30));</span>
+<span class="nc" id="L299">            textArea.setBounds(200,200,500,200);</span>
+
+
+<span class="nc" id="L302">            panel.add(textArea);</span>
+<span class="nc" id="L303">            add(panel);</span>
+
+<span class="nc" id="L305">            repaint();</span>
+<span class="nc" id="L306">            revalidate();</span>
+        }
+<span class="nc" id="L308">    }</span>
+
+    /**
+     * A framet adjuk vissza
+     * @return frame
+     */
+    public JFrame getFrame(){
+<span class="nc" id="L315">        return this;</span>
+    }
+
+    /**
+     * A statuszt kerjuk el, es adjuk vissza
+     * @return status
+     */
+    public String getStatus(){
+<span class="nc" id="L323">        return gameControl.getStatus();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

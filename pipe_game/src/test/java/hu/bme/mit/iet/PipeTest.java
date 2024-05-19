@@ -1,7 +1,7 @@
 package hu.bme.mit.iet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -56,7 +56,9 @@ public class PipeTest {
         pipe.timeTillNewBreak=10;
         pipe.BreakPipe();
         assertEquals(false, pipe.isBroken());//amikor meg van a torhetetlensegi idobol, akkor nem rontja el a fgv 
+        pipe.Repair();
         pipe.timeTillNewBreak=0;
+        pipe.BreakPipe();
         assertEquals(true, pipe.isBroken());
     }
 

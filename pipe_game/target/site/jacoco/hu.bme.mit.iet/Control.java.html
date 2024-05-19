@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Control.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pipe_game</a> &gt; <a href="index.source.html" class="el_package">hu.bme.mit.iet</a> &gt; <span class="el_source">Control.java</span></div><h1>Control.java</h1><pre class="source lang-java linenums">package hu.bme.mit.iet;
+import java.util.*;
+
+<span class="nc" id="L4">public class Control {</span>
+<span class="nc" id="L5">    private ArrayList&lt;Mechanic&gt; mechanics = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L6">    private ArrayList&lt;Saboteur&gt; saboteurs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L7">    private static ArrayList&lt;Pump&gt; pumps = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L8">    private ArrayList&lt;Cistern&gt; cisterns = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L9">    private ArrayList&lt;WaterSource&gt; waterSources = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L10">    private static ArrayList&lt;Pipe&gt; pipes = new ArrayList&lt;&gt;();</span>
+    private int rounds, maxRound;
+<span class="fc" id="L12">    private static int saboteurPoints, mechanicPoints;</span>
+    private Player currentPlayer,lastPlayer;
+<span class="nc" id="L14">    private boolean gameOver = false;</span>
+<span class="nc" id="L15">    private boolean randEnabled = true;</span>
+<span class="nc" id="L16">    private int pumpBreak = 2;</span>
+
+    /**
+     * A játék inicializálása:
+     * Játékosok létrehozása
+     * A hálózat elemeinek létrehozása, összekapcsolása
+     * Játékosok lehelyezése a hálózatra
+     * @param r az adott játék köreinek száma
+     * @param mechanicCounter hány szerelő játszik
+     * @param saboteurCounter hány szabotőr játszik
+     */
+    public void Init(int r, int mechanicCounter, int saboteurCounter) {
+<span class="nc" id="L28">        maxRound = r;</span>
+<span class="nc" id="L29">        rounds = 1;</span>
+
+        /** Letrehozzuk a jatekosokat
+         */
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        for (int i = 0; i &lt; mechanicCounter ;i++) {</span>
+<span class="nc" id="L34">            mechanics.add(new Mechanic());</span>
+        }
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        for (int i = 0; i &lt; saboteurCounter ;i++) {</span>
+<span class="nc" id="L37">            saboteurs.add(new Saboteur());</span>
+        }
+
+        /** Letrehozzuk a mezoket
+         */
+<span class="nc" id="L42">        WaterSource ws1 = new WaterSource();</span>
+<span class="nc" id="L43">        WaterSource ws2 = new WaterSource();</span>
+<span class="nc" id="L44">        Pipe pipe1 = new Pipe();</span>
+<span class="nc" id="L45">        Pipe pipe2 = new Pipe();</span>
+<span class="nc" id="L46">        Pipe pipe3 = new Pipe();</span>
+<span class="nc" id="L47">        Pipe pipe4 = new Pipe();</span>
+<span class="nc" id="L48">        Pipe pipe5 = new Pipe();</span>
+<span class="nc" id="L49">        Pump pump1 = new Pump();</span>
+<span class="nc" id="L50">        Pump pump2 = new Pump();</span>
+<span class="nc" id="L51">        Cistern c1 = new Cistern();</span>
+<span class="nc" id="L52">        Cistern c2 = new Cistern();</span>
+
+        /** Letrehozzuk a szomszedsagokat
+         */
+<span class="nc" id="L56">        connect(ws1, pipe1);</span>
+<span class="nc" id="L57">        connect(ws2, pipe2);</span>
+
+<span class="nc" id="L59">        connect(pump1, pipe1);</span>
+<span class="nc" id="L60">        connect(pump1, pipe3);</span>
+<span class="nc" id="L61">        connect(pump1, pipe4);</span>
+
+<span class="nc" id="L63">        connect(pump2, pipe2);</span>
+<span class="nc" id="L64">        connect(pump2, pipe3);</span>
+<span class="nc" id="L65">        connect(pump2, pipe5);</span>
+
+<span class="nc" id="L67">        pump1.AcceptNewFlow(pipe1,pipe4);</span>
+<span class="nc" id="L68">        pump2.AcceptNewFlow(pipe2,pipe5);</span>
+
+<span class="nc" id="L70">        connect(c1, pipe4);</span>
+<span class="nc" id="L71">        connect(c2, pipe5);</span>
+
+        /** Pumpakra tesszuk a jatekosokat
+         */
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (int i = 0; i&lt;mechanics.size();i++) {</span>
+<span class="nc" id="L76">            mechanics.get(i).setPos(pump1);</span>
+        }
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        for (int i = 0; i&lt;saboteurs.size();i++) {</span>
+<span class="nc" id="L79">            saboteurs.get(i).setPos(pump2);</span>
+        }
+
+<span class="nc" id="L82">        waterSources.add(ws1);</span>
+<span class="nc" id="L83">        waterSources.add(ws2);</span>
+<span class="nc" id="L84">        cisterns.add(c1);</span>
+<span class="nc" id="L85">        cisterns.add(c2);</span>
+<span class="nc" id="L86">        pumps.add(pump1);</span>
+<span class="nc" id="L87">        pumps.add(pump2);</span>
+<span class="nc" id="L88">        pipes.add(pipe1);</span>
+<span class="nc" id="L89">        pipes.add(pipe2);</span>
+<span class="nc" id="L90">        pipes.add(pipe3);</span>
+<span class="nc" id="L91">        pipes.add(pipe4);</span>
+<span class="nc" id="L92">        pipes.add(pipe5);</span>
+<span class="nc" id="L93">        currentPlayer = mechanics.get(0);</span>
+<span class="nc" id="L94">        currentPlayer.setActionPoints(3);</span>
+<span class="nc" id="L95">    }</span>
+
+    /**
+     * A körök végén kerül meghívásra
+     * Ilyenkor folyik a víz a csőrendszerben és frissülnek a csapatok pontszámai
+     * Csökkenti az efektek időtartalmát
+     */
+    public void RoundOver() {
+        /** ciszternák
+         */
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        for (Cistern c:cisterns) {</span>
+<span class="nc" id="L106">            mechanicPoints += c.PullWater();</span>
+<span class="nc" id="L107">            c.Generate();</span>
+        }
+        /** pumpák
+         */
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        for (Pump p:pumps) {</span>
+<span class="nc" id="L112">            saboteurPoints += p.PushWater();</span>
+        }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        for (Pump p:pumps) {</span>
+<span class="nc" id="L115">            p.PullWater();</span>
+            // pump random eltörése
+<span class="nc" id="L117">            Random rnd = new Random();</span>
+<span class="nc" id="L118">            pumpBreak--;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            if (randEnabled) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                if(rnd.nextInt(10) &gt; 7)</span>
+<span class="nc" id="L121">                    p.BreakPump();</span>
+<span class="nc" id="L122">            }</span>
+            else {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                if (pumpBreak == 0)</span>
+<span class="nc" id="L125">                    p.BreakPump();</span>
+            }
+        }
+        /** Vízforrás
+         */
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        for (WaterSource ws:waterSources) {</span>
+<span class="nc" id="L131">            saboteurPoints += ws.PushWater();</span>
+        }
+        /** Csövek
+         */
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        for (Pipe p:pipes) {</span>
+<span class="nc" id="L136">            p.decTimeTillNewBreak();</span>
+        }
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        for (Mechanic m:mechanics) {</span>
+<span class="nc" id="L139">            m.decGlued();</span>
+        }
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        for (Saboteur s:saboteurs) {</span>
+<span class="nc" id="L142">            s.decGlued();</span>
+        }
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (rounds &lt;= maxRound)</span>
+<span class="nc" id="L145">            rounds++;</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (rounds &gt; maxRound) {</span>
+<span class="nc" id="L147">            gameOver = true;</span>
+        }
+<span class="nc" id="L149">    }</span>
+
+
+    /**
+     * A játékos parancsait feldolgozó és megvalósító metódus
+     * @param &quot;currentPlayer&quot; az éppen soron lévő játékos
+     */
+    public int PlayerAction(ArrayList&lt;String&gt; command) {
+<span class="nc" id="L157">        int pumpLayed = -1;</span>
+<span class="nc bnc" id="L158" title="All 12 branches missed.">        switch (command.get(0)){</span>
+            case &quot;breakpipe&quot;:
+<span class="nc" id="L160">                currentPlayer.BreakPipe();</span>
+<span class="nc" id="L161">                break;</span>
+            case &quot;carrypipe&quot;:
+<span class="nc" id="L163">                currentPlayer.CarryPipeEnd(pipes.get(Integer.parseInt(command.get(2))));</span>
+<span class="nc" id="L164">                break;</span>
+            case &quot;carrypump&quot;:
+<span class="nc" id="L166">                currentPlayer.CarryPump();</span>
+<span class="nc" id="L167">                break;</span>
+            case &quot;laypipe&quot;:
+<span class="nc" id="L169">                currentPlayer.LayPipe();</span>
+<span class="nc" id="L170">                break;</span>
+            case &quot;laypump&quot;:
+<span class="nc" id="L172">                SystemPart pump = currentPlayer.LayPump();</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">                if (pumps.contains(pump))</span>
+<span class="nc" id="L174">                    pumpLayed = pumps.indexOf(pump);</span>
+<span class="nc" id="L175">                break;</span>
+            case &quot;move&quot;: {
+<span class="nc" id="L177">                String id = command.get(1) + &quot; &quot; + command.get(2);</span>
+<span class="nc" id="L178">                SystemPart moveTo = null; // ha az elem elérheto a jatekostol</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                for (SystemPart temp :</span>
+<span class="nc" id="L180">                        currentPlayer.getPosition().getNeighbours()) {</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                    if (id.equals(temp.getId()))</span>
+<span class="nc" id="L182">                        moveTo = temp;</span>
+                }
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                if (moveTo == null) {//ha nem erheto el breakelunk</span>
+<span class="nc" id="L185">                    break;</span>
+                }
+<span class="nc" id="L187">                currentPlayer.Move(moveTo);//jatekos probal mozogni</span>
+<span class="nc" id="L188">                break;</span>
+            }
+            case &quot;pumpchangeflow&quot;:
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                if (command.size() &lt; 3) {</span>
+<span class="nc" id="L192">                    break;</span>
+                }
+<span class="nc" id="L194">                String[] s1 = command.get(1).split(&quot; &quot;);</span>
+<span class="nc" id="L195">                int p1 = Integer.parseInt(s1[1]);</span>
+<span class="nc" id="L196">                int p2 = Integer.parseInt(command.get(3));</span>
+<span class="nc bnc" id="L197" title="All 8 branches missed.">                if (0 &gt; p1 || p1 &gt;= pipes.size() || 0 &gt; p2 || p2 &gt;= pipes.size() ){</span>
+                    // Nem letezo elemek
+<span class="nc" id="L199">                    break;</span>
+                }
+
+<span class="nc" id="L202">                Pipe pipe1 = pipes.get(p1);</span>
+<span class="nc" id="L203">                Pipe pipe2 = pipes.get(p2);</span>
+<span class="nc" id="L204">                boolean p1found = false, p2found = false;</span>
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">                for (int i = 0; i &lt; currentPlayer.getPosition().getNeighbours().size();++i) {</span>
+<span class="nc" id="L207">                    String id = currentPlayer.getPosition().getNeighbours().get(i).getId();</span>
+<span class="nc bnc" id="L208" title="All 4 branches missed.">                    if (!p1found &amp;&amp; id.equals(pipe1.id))</span>
+<span class="nc" id="L209">                        p1found = true;</span>
+<span class="nc bnc" id="L210" title="All 4 branches missed.">                    if (!p2found &amp;&amp; id.equals(pipe2.id))</span>
+<span class="nc" id="L211">                        p2found = true;</span>
+<span class="nc bnc" id="L212" title="All 4 branches missed.">                    if (p1found &amp;&amp; p2found) {</span>
+<span class="nc" id="L213">                        currentPlayer.ChangePumpFlow(pipe1, pipe2);</span>
+<span class="nc" id="L214">                        break;</span>
+                    }
+                }
+<span class="nc" id="L217">                break;</span>
+            case &quot;repair&quot;:
+<span class="nc" id="L219">                currentPlayer.Repair();</span>
+<span class="nc" id="L220">                break;</span>
+            case &quot;makeslippery&quot;:
+<span class="nc" id="L222">                currentPlayer.MakePipeSlippery();</span>
+<span class="nc" id="L223">                break;</span>
+            case &quot;makegluey&quot;:
+<span class="nc" id="L225">                currentPlayer.GluePipe();</span>
+<span class="nc" id="L226">                break;</span>
+            case &quot;pass&quot;:
+                // passed the turn
+<span class="nc" id="L229">                currentPlayer.setActionPoints(0);</span>
+<span class="nc" id="L230">                break;</span>
+            default:
+                break;
+        }
+<span class="nc" id="L234">        currentPlayer.decActionPoints();</span>
+<span class="nc" id="L235">        boolean roundOver = false;</span>
+        /** Ha nincs akciopontja a jelenlegi jatekosnak, iteralni kell egyet a jatekosok kozott
+         */
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        if (currentPlayer.getActionPoints() &lt;= 0) {</span>
+<span class="nc" id="L239">            roundOver = IterateCurrentPlayer();</span>
+<span class="nc" id="L240">            currentPlayer.setActionPoints(3);</span>
+        }
+        /** Ha kör vége van
+         */
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if (roundOver){</span>
+<span class="nc" id="L245">            RoundOver();</span>
+        }
+<span class="nc" id="L247">        return pumpLayed;</span>
+    }
+
+    public void setMechanicPoints(int points) {
+<span class="nc" id="L251">        mechanicPoints = points;</span>
+<span class="nc" id="L252">    }</span>
+    public int getMechanicPoints(){
+<span class="nc" id="L254">        return mechanicPoints;</span>
+    }
+    public static void setSaboteurPoints(int points) {
+<span class="fc" id="L257">        saboteurPoints = points;</span>
+<span class="fc" id="L258">    }</span>
+    public static int getSaboteurPoints() {
+<span class="fc" id="L260">        return saboteurPoints;</span>
+    }
+
+    public static void  AddPump(Pump p) {
+<span class="fc" id="L264">        Control.pumps.add(p);</span>
+<span class="fc" id="L265">    }</span>
+    public static void  AddPipe(Pipe p) {
+<span class="fc" id="L267">        Control.pipes.add(p);</span>
+<span class="fc" id="L268">    }</span>
+
+    private void connect(SystemPart s1, SystemPart s2) {
+<span class="nc" id="L271">        s1.AddNeighbour(s2);</span>
+<span class="nc" id="L272">        s2.AddNeighbour(s1);</span>
+<span class="nc" id="L273">    }</span>
+
+    public void setRand(boolean a) {
+<span class="nc" id="L276">        randEnabled = a;</span>
+<span class="nc" id="L277">    }</span>
+
+    public ArrayList&lt;Mechanic&gt; getMechanics(){
+<span class="nc" id="L280">        return mechanics;</span>
+    }
+
+    public ArrayList&lt;Saboteur&gt; getSaboteurs(){
+<span class="nc" id="L284">        return saboteurs;</span>
+    }
+
+    public ArrayList&lt;Pipe&gt; getPipes(){
+<span class="nc" id="L288">        return pipes;</span>
+    }
+
+    public ArrayList&lt;Pump&gt; getPumps(){
+<span class="nc" id="L292">        return pumps;</span>
+    }
+
+    public ArrayList&lt;Cistern&gt; getCisterns(){
+<span class="nc" id="L296">        return cisterns;</span>
+    }
+    public ArrayList&lt;WaterSource&gt; getWaterSources(){
+<span class="nc" id="L299">        return waterSources;</span>
+    }
+
+    /**
+     * Iteralofuggveny
+     * Iteralja a jatekosokat
+     * @return
+     */
+    public boolean IterateCurrentPlayer(){
+<span class="nc bnc" id="L308" title="All 2 branches missed.">        if(mechanics.contains(currentPlayer)) {</span>
+<span class="nc" id="L309">            int mechIdx = mechanics.indexOf(currentPlayer);</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">            if (mechIdx == (mechanics.size() - 1)) {</span>
+<span class="nc" id="L311">                lastPlayer = currentPlayer;</span>
+<span class="nc" id="L312">                currentPlayer = saboteurs.get(0);</span>
+<span class="nc" id="L313">            }</span>
+            else {
+<span class="nc" id="L315">                lastPlayer = currentPlayer;</span>
+<span class="nc" id="L316">                currentPlayer = mechanics.get(mechIdx + 1);</span>
+            }
+<span class="nc" id="L318">        }</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        else if(saboteurs.contains(currentPlayer)) {</span>
+<span class="nc" id="L320">            int sabIdx = saboteurs.indexOf(currentPlayer);</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">            if (sabIdx == (saboteurs.size() - 1)) {</span>
+<span class="nc" id="L322">                lastPlayer = currentPlayer;</span>
+<span class="nc" id="L323">                currentPlayer = mechanics.get(0);</span>
+<span class="nc" id="L324">                return true;</span>
+            }
+            else {
+<span class="nc" id="L327">                lastPlayer = currentPlayer;</span>
+<span class="nc" id="L328">                currentPlayer = saboteurs.get(sabIdx + 1);</span>
+            }
+        }
+<span class="nc" id="L331">        return false;</span>
+    }
+
+    /**
+     * Lekérdezi a Modell jelenglegi állapotát, amit majd kiírunk, hogy
+     * tájékoztassuk a játékosokat
+     * @return String status
+     */
+    public String getStatus() {
+<span class="nc" id="L340">        String mehanicParts = &quot;&quot;;</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">        for (Mechanic m: mechanics) {</span>
+<span class="nc" id="L342">            mehanicParts += m.getId() + &quot; has: &quot; + m.getPart() + &quot;\n&quot; ;</span>
+        }
+<span class="nc" id="L344">        String status =</span>
+<span class="nc" id="L345">        &quot;Round &quot; + rounds + &quot;/&quot; + maxRound + &quot;\n&quot; +</span>
+<span class="nc" id="L346">        &quot;Mechanic points: &quot; + mechanicPoints + &quot;\n&quot; +</span>
+<span class="nc" id="L347">        &quot;Saboteur points: &quot; + saboteurPoints + &quot;\n&quot; +</span>
+        &quot;\n&quot; +
+<span class="nc" id="L349">        &quot;Now playing: &quot; + currentPlayer.id + &quot;\n&quot; +</span>
+<span class="nc" id="L350">        &quot;Actions left: &quot; + currentPlayer.getActionPoints() + &quot;\n&quot; +</span>
+        &quot;\n&quot; +
+<span class="nc" id="L352">        mehanicParts ;</span>
+
+<span class="nc" id="L354">        return status;</span>
+    }
+
+    /**
+     * Visszaadja az utolso cselekvo embert
+     * @return player
+     */
+    public Player getLastPlayer() {
+<span class="nc bnc" id="L362" title="All 2 branches missed.">        if (currentPlayer.getActionPoints() &gt;= 3)</span>
+<span class="nc" id="L363">            return lastPlayer;</span>
+<span class="nc" id="L364">        else return currentPlayer;</span>
+    }
+
+    /**
+     * Vege van-e a hateknak
+     * @return vege van-e a jateknak
+     */
+    public boolean GameOver() {
+<span class="nc" id="L372">        return gameOver;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

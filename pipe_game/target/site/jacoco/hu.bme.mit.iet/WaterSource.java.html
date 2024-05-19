@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WaterSource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pipe_game</a> &gt; <a href="index.source.html" class="el_package">hu.bme.mit.iet</a> &gt; <span class="el_source">WaterSource.java</span></div><h1>WaterSource.java</h1><pre class="source lang-java linenums">package hu.bme.mit.iet;
+
+
+/**
+ * A forrás, ahonnan folyamatosan jön a víz. Ezt továbbítja a szomszédos csövekent.
+ */
+public class WaterSource extends SystemPart {
+<span class="fc" id="L8">	protected static int idNum = 0;</span>
+
+	/**
+	 * Konstruktor, ami beállítja az id-t az osztály nevére és egy eltérő számra
+	 */
+<span class="fc" id="L13">	public WaterSource() {</span>
+<span class="fc" id="L14">		id = &quot;watersource &quot; + idNum++;</span>
+<span class="fc" id="L15">	}</span>
+
+	/**
+	 * Az összes szomszédos csőbe a max capacitásának megfelelő vizet pumpál
+	 * A lyukas csöveket kifolyt vizet adja vissza
+	 * @return a vizmennyiseg, ami a lyuaks csöveket kifolyt
+	 */
+	@Override
+	public int PushWater() {
+<span class="fc" id="L24">		int points = 0;</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		for (SystemPart pipe: neighbours) {</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">			if (pipe.isBroken()) {</span>
+<span class="fc" id="L27">				points += pipe.getCapacity();</span>
+<span class="fc" id="L28">			} else {</span>
+<span class="fc" id="L29">				pipe.setWater(pipe.getCapacity());</span>
+			}
+		}
+<span class="fc" id="L32">		return points;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

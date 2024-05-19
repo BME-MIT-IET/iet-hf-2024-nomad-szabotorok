@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>View.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pipe_game</a> &gt; <a href="index.source.html" class="el_package">hu.bme.mit.iet</a> &gt; <span class="el_source">View.java</span></div><h1>View.java</h1><pre class="source lang-java linenums">package hu.bme.mit.iet;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+
+public class View extends JPanel{
+    private ArrayList&lt;ViewBase&gt; fields;
+    private GUIControl guiControl;
+    private JFrame frame;
+    private JComboBox&lt;String&gt; commandSelect;
+    private JLayeredPane pane;
+    private JTextArea statusTextBox;
+    private JLabel command;
+<span class="nc" id="L17">    private ArrayList&lt;String &gt; tempCommand = new ArrayList&lt;&gt;(); //a több parancsból állokhoz</span>
+<span class="nc" id="L18">    private ArrayList&lt;Line2D&gt; lines = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Konstruktor
+     * a játékmező létrehozása
+     * JComboBox létrehozása a commandokhoz
+     * @param control
+     */
+<span class="nc" id="L26">    public View(GUIControl control) {</span>
+<span class="nc" id="L27">        guiControl = control;</span>
+<span class="nc" id="L28">        frame = guiControl.getFrame();</span>
+<span class="nc" id="L29">        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+
+<span class="nc" id="L31">        pane = new JLayeredPane();</span>
+<span class="nc" id="L32">        pane.setBounds(0,0,1000, 855);</span>
+
+<span class="nc" id="L34">        statusTextBox = new JTextArea();</span>
+<span class="nc" id="L35">        statusTextBox.setEnabled(false);</span>
+<span class="nc" id="L36">        statusTextBox.setDisabledTextColor(Color.BLACK);</span>
+<span class="nc" id="L37">        statusTextBox.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 16));</span>
+<span class="nc" id="L38">        statusTextBox.setBounds(800, 20, 180, 250);</span>
+
+<span class="nc" id="L40">        commandSelect = new JComboBox&lt;String&gt;();</span>
+<span class="nc" id="L41">        commandSelect.setBounds(800, 330, 180, 20);</span>
+
+<span class="nc" id="L43">        commandSelect.addItem(&quot;Break pipe&quot;);</span>
+<span class="nc" id="L44">        commandSelect.addItem(&quot;Carry pipe&quot;);</span>
+<span class="nc" id="L45">        commandSelect.addItem(&quot;Carry pump&quot;);</span>
+<span class="nc" id="L46">        commandSelect.addItem(&quot;Lay pipe&quot;);</span>
+<span class="nc" id="L47">        commandSelect.addItem(&quot;Lay pump&quot;);</span>
+<span class="nc" id="L48">        commandSelect.addItem(&quot;Move&quot;);</span>
+<span class="nc" id="L49">        commandSelect.addItem(&quot;Change pump flow&quot;);</span>
+<span class="nc" id="L50">        commandSelect.addItem(&quot;Repair&quot;);</span>
+<span class="nc" id="L51">        commandSelect.addItem(&quot;Make pipe slippery&quot;);</span>
+<span class="nc" id="L52">        commandSelect.addItem(&quot;Glue pipe&quot;);</span>
+<span class="nc" id="L53">        commandSelect.addItem(&quot;Pass&quot;);</span>
+
+<span class="nc" id="L55">        command = new JLabel(&quot;Choose an action:&quot;);</span>
+<span class="nc" id="L56">        command.setBounds(800,290,200,50);</span>
+<span class="nc" id="L57">        command.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 18));</span>
+
+<span class="nc" id="L59">        pane.add(statusTextBox, Integer.valueOf(0));</span>
+<span class="nc" id="L60">        pane.add(command, Integer.valueOf(0));</span>
+<span class="nc" id="L61">        pane.add(commandSelect, Integer.valueOf(0));</span>
+
+<span class="nc" id="L63">        commandSelect.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L66">                commitCommand((String) commandSelect.getSelectedItem());</span>
+<span class="nc" id="L67">            }</span>
+        });
+
+<span class="nc" id="L70">        this.setLayout(null);</span>
+<span class="nc" id="L71">        this.setOpaque(true);</span>
+<span class="nc" id="L72">        this.add(pane);</span>
+
+<span class="nc" id="L74">        frame.add(this);</span>
+
+<span class="nc" id="L76">        frame.repaint();</span>
+<span class="nc" id="L77">        frame.revalidate();</span>
+<span class="nc" id="L78">    }</span>
+
+    /**
+     * játékmező és összeköttetések kirajzolása
+     * @param g  the &lt;code&gt;Graphics&lt;/code&gt; context in which to paint
+     */
+    @Override
+    public void paint(Graphics g){
+<span class="nc" id="L86">        super.paint(g);</span>
+<span class="nc" id="L87">        Graphics2D g2d = (Graphics2D) g;</span>
+
+<span class="nc" id="L89">        ArrayList&lt;Line2D&gt; lines = this.getlines();</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        for (int i = 0; i &lt; lines.size(); ++i) {</span>
+<span class="nc" id="L91">            g2d.draw(lines.get(i));</span>
+        }
+
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * grafikusan frissíti a teljes játékmezőt minden elemével együtt
+     */
+    public void UpdateAll() {
+<span class="nc" id="L100">        String str = guiControl.getStatus();</span>
+<span class="nc" id="L101">        statusTextBox.setText(str);</span>
+<span class="nc" id="L102">        lines.clear();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        for (ViewBase field :fields ) {</span>
+<span class="nc" id="L104">                field.Update();</span>
+        }
+<span class="nc" id="L106">        frame.repaint();//test</span>
+<span class="nc" id="L107">        frame.revalidate();</span>
+<span class="nc" id="L108">    }</span>
+
+    /**
+     * JComboBoxban kiválasztott command aktiválása
+     * ,majd az új állapot szerint teljes grafikus frissítés
+     * @param input
+     */
+    public void ManageCommand(String input){
+<span class="nc" id="L116">        tempCommand.add(input);</span>
+<span class="nc" id="L117">        guiControl.commitCommand(tempCommand);</span>
+<span class="nc" id="L118">        tempCommand.clear();</span>
+<span class="nc" id="L119">        UpdateAll();</span>
+<span class="nc" id="L120">    }</span>
+    public void ManageLongCommand(){
+<span class="nc" id="L122">        guiControl.commitCommand(tempCommand);</span>
+<span class="nc" id="L123">        tempCommand.clear();</span>
+<span class="nc" id="L124">        UpdateAll();</span>
+<span class="nc" id="L125">    }</span>
+    public void commitCommand(String input) {
+<span class="nc bnc" id="L127" title="All 12 branches missed.">        switch (input){</span>
+            case &quot;Break pipe&quot;:
+<span class="nc" id="L129">                tempCommand.clear();</span>
+<span class="nc" id="L130">                ManageCommand(&quot;breakpipe&quot;);</span>
+<span class="nc" id="L131">                break;</span>
+            case &quot;Carry pipe&quot;://több infó kel egynél
+<span class="nc" id="L133">                tempCommand.clear();</span>
+<span class="nc" id="L134">                tempCommand.add(&quot;carrypipe&quot;);</span>
+<span class="nc" id="L135">                break;</span>
+            case &quot;Carry pump&quot;:
+<span class="nc" id="L137">                tempCommand.clear();</span>
+<span class="nc" id="L138">                ManageCommand(&quot;carrypump&quot;);</span>
+<span class="nc" id="L139">                break;</span>
+            case &quot;Lay pipe&quot;:
+<span class="nc" id="L141">                tempCommand.clear();</span>
+<span class="nc" id="L142">                ManageCommand(&quot;laypipe&quot;);</span>
+<span class="nc" id="L143">                break;</span>
+            case &quot;Lay pump&quot;:
+<span class="nc" id="L145">                tempCommand.clear();</span>
+<span class="nc" id="L146">                ManageCommand(&quot;laypump&quot;);</span>
+<span class="nc" id="L147">                break;</span>
+            case &quot;Move&quot;://több infó is kellene majd
+<span class="nc" id="L149">                tempCommand.clear();</span>
+<span class="nc" id="L150">                tempCommand.add(&quot;move&quot;);</span>
+<span class="nc" id="L151">                break;</span>
+            case &quot;Change pump flow&quot;://több infó is kellene majd
+<span class="nc" id="L153">                tempCommand.clear();</span>
+<span class="nc" id="L154">                tempCommand.add(&quot;pumpchangeflow&quot;);</span>
+<span class="nc" id="L155">                break;</span>
+            case &quot;Repair&quot;:
+<span class="nc" id="L157">                tempCommand.clear();</span>
+<span class="nc" id="L158">                ManageCommand(&quot;repair&quot;);</span>
+<span class="nc" id="L159">                break;</span>
+            case &quot;Make pipe slippery&quot;:
+<span class="nc" id="L161">                tempCommand.clear();</span>
+<span class="nc" id="L162">                ManageCommand(&quot;makeslippery&quot;);</span>
+<span class="nc" id="L163">                break;</span>
+            case &quot;Glue pipe&quot;:
+<span class="nc" id="L165">                tempCommand.clear();</span>
+<span class="nc" id="L166">                ManageCommand(&quot;makegluey&quot;);</span>
+<span class="nc" id="L167">                break;</span>
+            case &quot;Pass&quot;:
+<span class="nc" id="L169">                tempCommand.clear();</span>
+<span class="nc" id="L170">                ManageCommand(&quot;pass&quot;);</span>
+<span class="nc" id="L171">                break;</span>
+            default:
+            break;
+        }
+<span class="nc" id="L175">    }</span>
+
+
+    /**
+     * setter függvény
+     * @param things
+     */
+    public void setFields(ArrayList&lt;ViewBase&gt; things) {
+<span class="nc" id="L183">        fields = things;</span>
+<span class="nc" id="L184">    }</span>
+
+    /**
+     * getter függvény
+     * @return
+     */
+    public JLayeredPane getPanel(){
+<span class="nc" id="L191">        return pane;</span>
+    }
+
+    /**
+     * getter függvény
+     * @return
+     */
+    public JFrame getFrame(){
+<span class="nc" id="L199">        return frame;</span>
+    }
+
+    /**
+     * getter függvény
+     * @return
+     */
+    public ArrayList&lt;ViewBase&gt; getFields(){
+<span class="nc" id="L207">        return fields;</span>
+    }
+
+    /**
+     * új vonal hozzáadása a lines ArrayListhez
+     * @param line
+     */
+    public void addLine(Line2D line) {
+<span class="nc" id="L215">        lines.add(line);</span>
+<span class="nc" id="L216">    }</span>
+
+    /**
+     * getter függvény
+     * @return
+     */
+    public ArrayList&lt;Line2D&gt; getlines(){
+<span class="nc" id="L223">        return lines;</span>
+    }
+
+    /**
+     * getter függvény
+     * @return
+     */
+<span class="nc" id="L230">    public ArrayList&lt;String&gt; getTempCommand(){ return tempCommand; }</span>
+
+    /**
+     * új command hozzáadása a tempCommand temporary commandokat tartalmazó listához
+     * @param x
+     */
+<span class="nc" id="L236">    public void addCommand(String x) {tempCommand.add(x);}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

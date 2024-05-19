@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CisternView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pipe_game</a> &gt; <a href="index.source.html" class="el_package">hu.bme.mit.iet</a> &gt; <span class="el_source">CisternView.java</span></div><h1>CisternView.java</h1><pre class="source lang-java linenums">package hu.bme.mit.iet;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+public class CisternView extends ViewBase{
+    private Cistern cistern;
+    private JButton button;
+    private JButton part;
+    private ArrayList&lt;JLabel&gt; players;
+
+    /**
+     * Konstruktor, ami létrehozza az osztály grafikus megjelenéséhez szükséges swing elemeket
+     * @param view
+     * @param cistern
+     */
+    public CisternView(View view, Cistern cistern) {
+<span class="nc" id="L19">        super(view);</span>
+<span class="nc" id="L20">        this.cistern = cistern;</span>
+<span class="nc" id="L21">        button = new JButton();</span>
+<span class="nc" id="L22">        part = new JButton();</span>
+<span class="nc" id="L23">        button.addActionListener(this);</span>
+<span class="nc" id="L24">        players = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L25">    }</span>
+
+    /**
+     * Grafikusan rissíti a példány állapotát:
+     * leszedi a rajta levő játékosokat, majd helyesen felteszi őket
+     * frissíti a part JButtont a jelenlegi állapotoknak megfelelően
+     */
+    @Override
+    public void Update() {
+<span class="nc" id="L34">        button.setBounds(x,y,50,50);</span>
+<span class="nc" id="L35">        button.setBackground(Color.RED);</span>
+
+<span class="nc" id="L37">        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));</span>
+
+
+        /** Eloszor leszedjuk az elozo dolgokat a pane-rol
+         */
+<span class="nc" id="L42">        view.getPanel().remove(button);</span>
+
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        while (players.size() &gt; 0){</span>
+<span class="nc" id="L45">            view.getPanel().remove(players.get(0));</span>
+<span class="nc" id="L46">            players.remove(0);</span>
+        }
+
+        /** Feltesszuk a dolgokat a pane-re
+         */
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        for (int i = 0; i &lt; cistern.players.size(); ++i){</span>
+<span class="nc" id="L52">            JLabel player = new JLabel(cistern.players.get(i).getId());</span>
+<span class="nc" id="L53">            player.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 10));</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if (i &lt; 3)</span>
+<span class="nc" id="L55">                player.setBounds(x+1+i*16, y, 16, 16);</span>
+            else
+<span class="nc" id="L57">                player.setBounds(x+1+(i-3)*16, y+32, 16, 16);</span>
+<span class="nc" id="L58">            players.add(player);</span>
+<span class="nc" id="L59">            view.getPanel().add(player, Integer.valueOf(2));</span>
+        }
+
+<span class="nc" id="L62">        view.getPanel().add(button, Integer.valueOf(1));</span>
+
+<span class="nc" id="L64">        view.getPanel().remove(part);</span>
+
+        /** Ha van pumpa a ciszternan, azt is feltesszuk
+         */
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if(cistern.hasPump()) {</span>
+<span class="nc" id="L69">            part.setBounds(x + 40, y + 40, 23, 23);</span>
+<span class="nc" id="L70">            part.setBackground(new Color(89, 158, 227,255));</span>
+<span class="nc" id="L71">            part.setEnabled(false);</span>
+<span class="nc" id="L72">            view.getPanel().add(part, Integer.valueOf(2));</span>
+        }
+
+<span class="nc" id="L75">    }</span>
+
+    /**
+     * getter fügvény ID-re
+     * @return ID-t adja vissza
+     */
+    public String getID(){
+<span class="nc" id="L82">        return cistern.getId();</span>
+    }
+
+    /**
+     * ActionListener interface megvalósítása
+     * @param e the event to be processed
+     */
+    public void actionPerformed(ActionEvent e){
+<span class="nc" id="L90">       action(cistern.getId());</span>
+<span class="nc" id="L91">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
