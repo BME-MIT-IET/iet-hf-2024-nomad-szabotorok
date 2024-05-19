@@ -53,7 +53,10 @@ public class PipeTest {
     @Test
     void testBreakPipe() {
         assertEquals(false, pipe.isBroken());
+        pipe.timeTillNewBreak=10;
         pipe.BreakPipe();
+        assertEquals(false, pipe.isBroken());//amikor meg van a torhetetlensegi idobol, akkor nem rontja el a fgv 
+        pipe.timeTillNewBreak=0;
         assertEquals(true, pipe.isBroken());
     }
 
