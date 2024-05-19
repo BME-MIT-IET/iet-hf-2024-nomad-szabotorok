@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" indentation="0" linelength="160" name="root" signature="B7E7AD8D949FA6F551D47247AF9F868EBF1FD7B4" version="7.1.3">
+<include>qfs.qft</include>
+<TestSet id="_27" name="App tests">
+<SetupSequence id="_28" name="Launch Nomadok">
+<SetGlobalStep id="_29" varname="client">
+<default>Nomadok</default>
+</SetGlobalStep>
+<ClientWaiter client="$(client)" id="_2A" local="true" raise="false" resvarname="isSUTRunning" timeout="0">
+<comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+</ClientWaiter>
+<IfSequence id="_2B" name="Launch SUT if not running" test="not $(isSUTRunning)">
+<JavaClientStarter class="Main" client="$(client)" executable="${qftest:java}" id="_2C">
+<parameter>-classpath</parameter>
+<parameter>C:\BME 6. félév\IET\iet-hf-2024-nomad-szabotorok\out\production\iet-hf-2024-nomad-szabotorok</parameter>
+</JavaClientStarter>
+<ClientWaiter client="$(client)" id="_2D"/>
+</IfSequence>
+</SetupSequence>
+<TestCase id="_8P" name="Broken pipe, saboteurs win">
+<BasicSequence id="_89" name="Saboteur breaks pipe 1">
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása" event="MOUSE_MPRC" id="_8A" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása2" event="MOUSE_MPRC" id="_8B" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_8C" modifiers="16" x="69"
+                y="13"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_8D" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_8E" modifiers="16" x="53"
+                y="10"/>
+<KeyEventStep client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="KEY_PTR" id="_8F" keychar="10" keycode="10" modifiers="0"/>
+<MouseEventStep clicks="2" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_8G" modifiers="16" x="54"
+                y="10"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Move" event="MOUSE_MPRC" id="_8H" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_1" event="MOUSE_MPRC" id="_8I" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_8J" modifiers="16" x="50"
+                y="8"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Break pipe" event="MOUSE_MPRC" id="_8K"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_8L" modifiers="16" x="42"
+                y="6"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_8M" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_8N" modifiers="16" x="61"
+                y="12"/>
+<KeyEventStep client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="KEY_PTR" id="_8O" keychar="10" keycode="10" modifiers="0"/>
+</BasicSequence>
+<BasicSequence id="_8Q" name="Check summary, saboteurs win">
+<CheckItemsStep checktype="items" client="$(client)" component="frameSivatagi_Vízhálózat.text" id="_8R">
+<item>Vége a Játéknak!</item>
+<item>Szerel&#337;k pontjai: 0</item>
+<item>Szabot&#337;rök pontjai: 5</item>
+<item>A szabot&#337;rök nyertek!</item>
+</CheckItemsStep>
+</BasicSequence>
+</TestCase>
+<TestCase id="_81" name="Game ends, summary shown">
+<BasicSequence id="_7s" name="Everybody pass, game ends">
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása" event="MOUSE_MPRC" id="_7t" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása2" event="MOUSE_MPRC" id="_7u" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_7v" modifiers="16" x="33"
+                y="6"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_7w" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_7x" modifiers="16" x="59"
+                y="8"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_7y" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_7z" modifiers="16" x="55"
+                y="13"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_7+" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_7-" modifiers="16" x="45"
+                y="12"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_80" modifiers="16"/>
+</BasicSequence>
+<BasicSequence id="_87" name="Check summary">
+<CheckItemsStep checktype="items" client="$(client)" component="frameSivatagi_Vízhálózat.text" id="_88">
+<item>Vége a Játéknak!</item>
+<item>Szerel&#337;k pontjai: 0</item>
+<item>Szabot&#337;rök pontjai: 0</item>
+<item>Döntetlen</item>
+</CheckItemsStep>
+</BasicSequence>
+</TestCase>
+<TestCase id="_7a" name="Start game with 9 rounds and 4-4 Mechanics and Saboteurs">
+<BasicSequence id="_7R" name="Start game with 9 rounds and 4-4 Mechanics and Saboteurs">
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása" event="MOUSE_MPRC" id="_7S" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboHány_kör_legyen?" event="MOUSE_MPRC" id="_7T" modifiers="16" x="24"
+                y="8"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboHány_kör_legyen?@9" event="MOUSE_MPRC" id="_7U" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.button5" event="MOUSE_MPRC" id="_7V" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboHány_szabot&#337;r_legyen?@4" event="MOUSE_MPRC" id="_7W"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboHány_szerel&#337;_legyen?" event="MOUSE_MPRC" id="_7X" modifiers="16"
+                x="23" y="10"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboHány_szerel&#337;_legyen?@4" event="MOUSE_MPRC" id="_7Y" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása2" event="MOUSE_MPRC" id="_7Z" modifiers="16"/>
+</BasicSequence>
+<BasicSequence id="_7j" name="Check all players positions">
+<CheckGeometryStep client="$(client)" component="labelM02" height="16" id="_7k" width="16" x="59" y="381"/>
+<CheckGeometryStep client="$(client)" component="labelM12" height="16" id="_7l" width="16" x="75" y="381"/>
+<CheckGeometryStep client="$(client)" component="labelM2" height="16" id="_7m" width="16" x="91" y="381"/>
+<CheckGeometryStep client="$(client)" component="labelM3" height="16" id="_7n" width="16" x="59" y="413"/>
+<CheckGeometryStep client="$(client)" component="labelS03" height="16" id="_7o" width="16" x="709" y="381"/>
+<CheckGeometryStep client="$(client)" component="labelS12" height="16" id="_7p" width="16" x="725" y="381"/>
+<CheckGeometryStep client="$(client)" component="labelS2" height="16" id="_7q" width="16" x="741" y="381"/>
+<CheckGeometryStep client="$(client)" component="labelS3" height="16" id="_7r" width="16" x="709" y="413"/>
+</BasicSequence>
+</TestCase>
+<TestCase id="_78" name="M0 moves to pipe 2, M1 and S0 tries to mvoe to pipe 2">
+<BasicSequence id="_6u" name="M0 moves to pipe 2, M1 and S0 tries to mvoe to pipe 2">
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása" event="MOUSE_MPRC" id="_6v" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása2" event="MOUSE_MPRC" id="_6w" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_6x" modifiers="16" x="62"
+                y="11"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Move" event="MOUSE_MPRC" id="_6y" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_2" event="MOUSE_MPRC" id="_6z" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_6+" modifiers="16" x="86"
+                y="7"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_6-" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_70" modifiers="16" x="31"
+                y="5"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Move" event="MOUSE_MPRC" id="_71" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_2" event="MOUSE_MPRC" id="_72" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_73" modifiers="16" x="102"
+                y="14"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_74" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_75" modifiers="16" x="23"
+                y="10"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Move" event="MOUSE_MPRC" id="_76" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_2" event="MOUSE_MPRC" id="_77" modifiers="16"/>
+</BasicSequence>
+<BasicSequence id="_7K" name="Check M0, M1, S1 position">
+<CheckGeometryStep client="$(client)" component="labelM1" height="16" id="_7L" width="16" x="59" y="381"/>
+<CheckGeometryStep client="$(client)" component="labelM0" height="20" id="_7M" width="20" x="397" y="383"/>
+<CheckGeometryStep client="$(client)" component="labelS02" height="16" id="_7N" width="16" x="709" y="381"/>
+</BasicSequence>
+</TestCase>
+<TestCase id="_6O" name="Mechanic can pick up only close pipe">
+<BasicSequence id="_6D" name="Mechanic breaks pipe 0">
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása" event="MOUSE_MPRC" id="_6E" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása2" event="MOUSE_MPRC" id="_6F" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_6G" modifiers="16" x="31"
+                y="13"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Move" event="MOUSE_MPRC" id="_6H" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_0" event="MOUSE_MPRC" id="_6I" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_6J" modifiers="16" x="46"
+                y="9"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Break pipe" event="MOUSE_MPRC" id="_6K"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_6L" modifiers="16" x="65"
+                y="8"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_6M" modifiers="16" x="65"
+                y="8"/>
+</BasicSequence>
+<BasicSequence id="_6o" name="Check pipe0 not broken">
+<CheckImageStep client="$(client)" component="buttonPipe_0" id="_6q">
+<ImageNode height="50" name="checkimage" width="50">
+<webp size="180">UaRzMfBAv(*wpBQPT?K]TAAA8GaLGA:$cjxei7cRkl?j:Up0?jZG$C1jDrkbtFU3B5`ek$O==Zb=x|sIJD
+)_PLaf(TtO5qM?I64KW1BwlY]h]hihtpU,ILe:`uYphJjU0I9%YtQI$9S$'~dsocsDS,X;HCyi?!cK;m
+\kxraJ]9!Q44f'}Yh/25vGB;7u2A~{^9?aJ;g85Gk5q.KC"St|d}^EqBDAA</webp>
+</ImageNode>
+</CheckImageStep>
+</BasicSequence>
+</TestCase>
+<TestCase id="_2E" name="Sabouter1 break&amp;make pipe1slippery &amp; Sabouter2 break&amp;glue pipe2">
+<BasicSequence id="_2F" name="Sabouter1 break&amp;make pipe1slippery &amp; Sabouter2 break&amp;glue pipe2">
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása" event="MOUSE_MPRC" id="_2G" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.button" event="MOUSE_MPRC" id="_2H" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboHány_kör_legyen?@2" event="MOUSE_MPRC" id="_2I" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása2" event="MOUSE_MPRC" id="_2J" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_2K" modifiers="16" x="44"
+                y="11"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_2L" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_2M" modifiers="16" x="32"
+                y="7"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Pass" event="MOUSE_MPRC" id="_2N" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_2O" modifiers="16" x="40"
+                y="10"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Move" event="MOUSE_MPRC" id="_2P" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_1" event="MOUSE_MPRC" id="_2Q" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_2R" modifiers="16" x="60"
+                y="12"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Break pipe" event="MOUSE_MPRC" id="_2S"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_2T" modifiers="16" x="39"
+                y="4"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Make pipe slippery" event="MOUSE_MPRC" id="_2U"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_2V" modifiers="16" x="38"
+                y="12"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Move" event="MOUSE_MPRC" id="_2W" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_2" event="MOUSE_MPRC" id="_2X" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_2Y" modifiers="16" x="74"
+                y="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Break pipe" event="MOUSE_MPRC" id="_2Z"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_2a" modifiers="16" x="29"
+                y="15"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Glue pipe" event="MOUSE_MPRC" id="_2b" modifiers="16"/>
+</BasicSequence>
+<BasicSequence id="_2c" name="Check pipes states">
+<CheckImageStep client="$(client)" component="buttonPipe_1" id="_2d">
+<ImageNode height="50" name="checkimage" width="50">
+<webp size="184">UaRz{hBAv(*wpBQPT?JlUAAA8GaLGAQuK;0m'fxVf_6|*8[dumaDmCn1thD\wy8Mf!|\fS']-H3maT**]=
+DO'.;e**eJ;Kx9cXdhs"t5[Sk,pvIIZ/_H0tY.d4',k)C}%xY).s~QVRbjv2Mtd0Iwtn,xw/9T`RF7XL
+0oYL%AUECfsE4DOfN[,h*Bwi\'p`PJ3k~udQSKttAMGoiK1t?$!?W^vCt5WQFAAA</webp>
+</ImageNode>
+</CheckImageStep>
+<CheckStringStep client="$(client)" component="labelS0" id="_2e">
+<text>S0</text>
+</CheckStringStep>
+<CheckImageStep client="$(client)" component="buttonPipe_2" id="_2f">
+<ImageNode height="50" name="checkimage" width="50">
+<webp size="218">UaRz'5BAv(*wpBQPT?37YAAA8GaLGAPBg\0mk9h7Y$?6bHpQY$yzN$o.);j=PGSL/"fzm-:N$W9ZVhl}]~
+a@0mQRB+T3*u/s-H{2UzuAM2+"74O0[t0:H2\do)(d;yTw=JxteE%tk_:h``bv^aB$S{AwOP{@*tUmmh
+/`((W000cl\VonU.s?5SlB$QxdIAKC%yLo0CAjj+!MKyY?MtW@2G/hTcupLBoS?43E5!8rpIGBo)3KbB
+$WAAu!R,FBrjQ*r\AFUku=KAA</webp>
+</ImageNode>
+</CheckImageStep>
+<CheckStringStep client="$(client)" component="labelS1" id="_2g">
+<text>S1</text>
+</CheckStringStep>
+</BasicSequence>
+</TestCase>
+<TestCase id="_5m" name="Mechanic can pick up only close pipe">
+<BasicSequence id="_69" name="Start game">
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása" event="MOUSE_MPRC" id="_6A" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonJáték_indítása2" event="MOUSE_MPRC" id="_6B" modifiers="16"/>
+</BasicSequence>
+<BasicSequence id="_5q" name="Check M0 pipe">
+<CheckStringStep checktype="item" client="$(client)" component="frameSivatagi_Vízhálózat.textChoose_an_action:&amp;7" id="_5r">
+<text>M0 has: nothing</text>
+</CheckStringStep>
+</BasicSequence>
+<BasicSequence id="_5t" name="Pick up pipe 4">
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.button4" event="MOUSE_MPRC" id="_5u" modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Carry pipe" event="MOUSE_MPRC" id="_5v"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_4" event="MOUSE_MPRC" id="_5w" modifiers="16"/>
+</BasicSequence>
+<BasicSequence id="_5x" name="Check M0 pipe">
+<CheckStringStep checktype="item" client="$(client)" component="frameSivatagi_Vízhálózat.textChoose_an_action:&amp;7" id="_5y">
+<text>M0 has: nothing</text>
+</CheckStringStep>
+</BasicSequence>
+<BasicSequence id="_5z" name="Pick up cistern">
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_5+" modifiers="16" x="68"
+                y="14"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Carry pipe" event="MOUSE_MPRC" id="_5-"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.button2" event="MOUSE_MPRC" id="_60" modifiers="16"/>
+</BasicSequence>
+<BasicSequence id="_61" name="Check M0 pipe">
+<CheckStringStep checktype="item" client="$(client)" component="frameSivatagi_Vízhálózat.textChoose_an_action:&amp;7" id="_62">
+<text>M0 has: nothing</text>
+</CheckStringStep>
+</BasicSequence>
+<BasicSequence id="_63" name="Pick up pipe 3">
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:" event="MOUSE_MPRC" id="_64" modifiers="16" x="58"
+                y="10"/>
+<MouseEventStep clicks="1" client="$(client)" component="frameSivatagi_Vízhálózat.comboChoose_an_action:@Carry pipe" event="MOUSE_MPRC" id="_65"
+                modifiers="16"/>
+<MouseEventStep clicks="1" client="$(client)" component="buttonPipe_3" event="MOUSE_MPRC" id="_66" modifiers="16"/>
+</BasicSequence>
+<BasicSequence id="_67" name="Check M0 pipe">
+<CheckStringStep checktype="item" client="$(client)" component="frameSivatagi_Vízhálózat.textChoose_an_action:&amp;7" id="_68">
+<text>M0 has: pipe 3</text>
+</CheckStringStep>
+</BasicSequence>
+</TestCase>
+<CleanupSequence id="_2h" name="Close app">
+<WindowEventStep client="$(client)" component="frameSivatagi_Vízhálózat" event="WINDOW_CLOSING" id="_2i"/>
+</CleanupSequence>
+</TestSet>
+<PackageRoot id="_3"/>
+<ExtraSequence id="_4"/>
+<WindowList id="_5">
+<WindowStep class="Window" feature="Sivatagi Vízhálózat" height="855" id="frameSivatagi_Vízhálózat" uid="_C" width="1000" x="-1369" y="168">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">GUIControl</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Window</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Sivatagi Vízhálózat</extrafeature>
+<extrafeature name="qfs:labelTitle" negate="false" regexp="false" state="1">Sivatagi Vízhálózat</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JFrame</extrafeature>
+<ComponentStep class="Button" classcount="2" classindex="0" feature="Játék indítása" height="100" id="buttonJáték_indítása" uid="_D" width="300" x="358"
+               y="281">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Játék indítása</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">Játék indítása</extrafeature>
+<extrafeature name="qfs:labelTop" negate="false" regexp="false" state="0">Sivatagi Vízhálózat</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="ComboBox" classcount="3" classindex="0" height="20" id="frameSivatagi_Vízhálózat.comboHány_kör_legyen?" uid="_E" width="50" x="658"
+               y="271">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JComboBox</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">ComboBox</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Hány kör legyen?</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="1">Hány kör legyen?</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JComboBox</extrafeature>
+<ComponentStep class="Button" classcount="1" classindex="0" id="frameSivatagi_Vízhálózat.button" uid="_F">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.plaf.metal.MetalComboBoxButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.plaf.metal.MetalComboBoxButton</extrafeature>
+<extrafeature name="qfs:type" negate="false" regexp="false" state="0">Button:ComboBoxButton</extrafeature>
+</ComponentStep>
+</ComponentStep>
+<ComponentStep class="Button" classcount="4" classindex="3" feature="Játék indítása" height="100" id="buttonJáték_indítása2" uid="_G" width="300" x="358"
+               y="531">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Játék indítása</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">Játék indítása</extrafeature>
+<extrafeature name="qfs:labelTop" negate="false" regexp="false" state="0">Hány szerel&#337; legyen?</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="ComboBox" classcount="1" classindex="0" height="20" id="frameSivatagi_Vízhálózat.comboChoose_an_action:" uid="_H" width="180" x="808"
+               y="361">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JComboBox</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">ComboBox</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Choose an action:</extrafeature>
+<extrafeature name="qfs:labelTop" negate="false" regexp="false" state="1">Choose an action:</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JComboBox</extrafeature>
+<ComponentStep class="Button" classcount="1" classindex="0" id="frameSivatagi_Vízhálózat.button4" uid="_5s">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.plaf.metal.MetalComboBoxButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.plaf.metal.MetalComboBoxButton</extrafeature>
+<extrafeature name="qfs:type" negate="false" regexp="false" state="0">Button:ComboBoxButton</extrafeature>
+</ComponentStep>
+</ComponentStep>
+<ComponentStep class="Button" classcount="12" classindex="1" feature="pipe 1" height="50" id="buttonPipe_1" uid="_I" width="50" x="433" y="31">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">pipe 1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">pipe 1</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="Button" classcount="12" classindex="2" feature="pipe 2" height="50" id="buttonPipe_2" uid="_J" width="50" x="383" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">pipe 2</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="0">M1</extrafeature>
+<extrafeature name="qfs:labelRight" negate="false" regexp="false" state="0">S1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">pipe 2</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="5" classindex="0" feature="S0" height="20" id="labelS0" uid="_x" width="20" x="447" y="33">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">S0</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">S0</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="5" classindex="1" feature="S1" height="20" id="labelS1" uid="_1M" width="20" x="397" y="383">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">S1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">S1</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Button" classcount="12" classindex="4" feature="pipe 4" height="50" id="buttonPipe_4" uid="_55" width="50" x="433" y="781">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">pipe 4</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">pipe 4</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="Button" classcount="12" classindex="8" height="50" id="frameSivatagi_Vízhálózat.button2" uid="_56" width="50" x="758" y="781">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="Button" classcount="12" classindex="10" height="50" id="frameSivatagi_Vízhálózat.button3" uid="_57" width="50" x="758" y="31">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="5" classindex="4" feature="Choose an action:" height="50" id="labelChoose_an_action:" uid="_5U" width="200" x="808"
+               y="321">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Choose an action:</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">Choose an action:</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Button" classcount="12" classindex="3" feature="pipe 3" height="50" id="buttonPipe_3" uid="_5V" width="50" x="333" y="781">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">pipe 3</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">pipe 3</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="TextArea" classcount="1" classindex="0" id="frameSivatagi_Vízhálózat.textChoose_an_action:" uid="_5n" x="808" y="51">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JTextArea</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">TextArea</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Choose an action:</extrafeature>
+<extrafeature name="qfs:labelBottom" negate="false" regexp="false" state="1">Choose an action:</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JTextArea</extrafeature>
+</ComponentStep>
+<ComponentStep class="Button" classcount="12" classindex="0" feature="pipe 0" height="50" id="buttonPipe_0" uid="_6C" width="50" x="333" y="31">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">pipe 0</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">pipe 0</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JButton</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="5" classindex="1" feature="M1" height="16" id="labelM1" uid="_7D" width="16" x="59" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">M1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">M1</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="5" classindex="0" feature="M0" height="20" id="labelM0" uid="_7E" width="20" x="397" y="383">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">M0</extrafeature>
+<extrafeature name="qfs:labelRight" negate="false" regexp="false" state="0">S0</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">M0</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="5" classindex="2" feature="S0" height="16" id="labelS02" uid="_7F" width="16" x="709" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">S0</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="0">M0</extrafeature>
+<extrafeature name="qfs:labelRight" negate="false" regexp="false" state="0">S1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">S0</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="ComboBox" classcount="3" classindex="1" height="20" id="frameSivatagi_Vízhálózat.comboHány_szabot&#337;r_legyen?" uid="_7O" width="50"
+               x="658" y="371">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JComboBox</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">ComboBox</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Hány szabot&#337;r legyen?</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="1">Hány szabot&#337;r legyen?</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JComboBox</extrafeature>
+<ComponentStep class="Button" classcount="1" classindex="0" id="frameSivatagi_Vízhálózat.button5" uid="_7P">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.plaf.metal.MetalComboBoxButton</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Button</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.plaf.metal.MetalComboBoxButton</extrafeature>
+<extrafeature name="qfs:type" negate="false" regexp="false" state="0">Button:ComboBoxButton</extrafeature>
+</ComponentStep>
+</ComponentStep>
+<ComponentStep class="ComboBox" classcount="3" classindex="2" height="20" id="frameSivatagi_Vízhálózat.comboHány_szerel&#337;_legyen?" uid="_7Q" width="50"
+               x="658" y="471">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JComboBox</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">ComboBox</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">Hány szerel&#337; legyen?</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="1">Hány szerel&#337; legyen?</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JComboBox</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="9" classindex="0" feature="M0" height="16" id="labelM02" uid="_7b" width="16" x="59" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">M0</extrafeature>
+<extrafeature name="qfs:labelBottom" negate="false" regexp="false" state="0">M3</extrafeature>
+<extrafeature name="qfs:labelRight" negate="false" regexp="false" state="0">M1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">M0</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="9" classindex="1" feature="M1" height="16" id="labelM12" uid="_7c" width="16" x="75" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">M1</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="0">M0</extrafeature>
+<extrafeature name="qfs:labelRight" negate="false" regexp="false" state="0">M2</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">M1</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="9" classindex="2" feature="M2" height="16" id="labelM2" uid="_7d" width="16" x="91" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">M2</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="0">M1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">M2</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="9" classindex="3" feature="M3" height="16" id="labelM3" uid="_7e" width="16" x="59" y="413">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">M3</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">M3</extrafeature>
+<extrafeature name="qfs:labelTop" negate="false" regexp="false" state="0">M0</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="9" classindex="4" feature="S0" height="16" id="labelS03" uid="_7f" width="16" x="709" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">S0</extrafeature>
+<extrafeature name="qfs:labelBottom" negate="false" regexp="false" state="0">S3</extrafeature>
+<extrafeature name="qfs:labelRight" negate="false" regexp="false" state="0">S1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">S0</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="9" classindex="5" feature="S1" height="16" id="labelS12" uid="_7g" width="16" x="725" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">S1</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="0">S0</extrafeature>
+<extrafeature name="qfs:labelRight" negate="false" regexp="false" state="0">S2</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">S1</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="9" classindex="6" feature="S2" height="16" id="labelS2" uid="_7h" width="16" x="741" y="381">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">S2</extrafeature>
+<extrafeature name="qfs:labelLeft" negate="false" regexp="false" state="0">S1</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">S2</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="Label" classcount="9" classindex="7" feature="S3" height="16" id="labelS3" uid="_7i" width="16" x="709" y="413">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">Label</extrafeature>
+<extrafeature name="qfs:labelBest" negate="false" regexp="false" state="0">S3</extrafeature>
+<extrafeature name="qfs:labelText" negate="false" regexp="false" state="1">S3</extrafeature>
+<extrafeature name="qfs:labelTop" negate="false" regexp="false" state="0">S0</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JLabel</extrafeature>
+</ComponentStep>
+<ComponentStep class="TextArea" classcount="1" classindex="0" id="frameSivatagi_Vízhálózat.text" uid="_82" x="208" y="231">
+<extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JTextArea</extrafeature>
+<extrafeature name="qfs:genericclass" negate="false" regexp="false" state="0">TextArea</extrafeature>
+<extrafeature name="qfs:systemclass" negate="false" regexp="false" state="0">javax.swing.JTextArea</extrafeature>
+</ComponentStep>
+</WindowStep>
+</WindowList>
+</RootStep>
