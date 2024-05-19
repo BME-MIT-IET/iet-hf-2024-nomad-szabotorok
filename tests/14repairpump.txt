@@ -1,5 +1,0 @@
-create Pump broken
-create Mechanic Pump 0
-start 1
-repairpipe
-pass
