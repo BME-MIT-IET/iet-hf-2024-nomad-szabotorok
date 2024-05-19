@@ -28,7 +28,7 @@ public class PumpView extends ViewBase{
      * játékosok újrahelyezése
      */
     @Override
-    public void Update() {
+    public void update() {
         button.setBounds(x,y,50,50);
         button.setBackground(new Color(89, 158, 227,255));
         if (pump.isBroken()) {
@@ -43,7 +43,7 @@ public class PumpView extends ViewBase{
          */
         view.getPanel().remove(button);
 
-        while (players.size() > 0){
+        while (!players.isEmpty()){
             view.getPanel().remove(players.get(0));
             players.remove(0);
         }
@@ -68,6 +68,7 @@ public class PumpView extends ViewBase{
      * getter függvény
      * @return
      */
+    @Override
     public String getID(){
         return pump.getId();
     }

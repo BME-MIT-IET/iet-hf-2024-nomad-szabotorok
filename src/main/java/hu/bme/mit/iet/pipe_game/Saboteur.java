@@ -27,7 +27,7 @@ public class Saboteur extends Player {
 	 * A szabotőr csúszóssá teszi a csövet amin áll.
 	 */
 	@Override
-	public void MakePipeSlippery() {
+	public void makePipeSlippery() {
 		position.setSlippery();
 	}
 }
